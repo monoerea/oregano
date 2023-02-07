@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_auth"
+    app:startDestination="@id/startFragment">
+    <activity
+        android:id="@+id/startFragment"
+        android:name="com.mono.oregano.ui.auth.AuthActivity"
+        android:label="@string/action_sign_in"
+        tools:layout="@layout/activity_start_up_screen"/>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.mono.oregano.ui.auth.login.LoginFragment"
+        android:label="@string/action_sign_in"
+        tools:layout="@layout/fragment_login"/>
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.mono.oregano.ui.auth.register.RegisterFragment"
+        android:label="@string/action_sign_up"
+        tools:layout="@layout/fragment_register"/>
+
+</navigation>

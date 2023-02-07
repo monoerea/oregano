@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "195351240193",
+    "project_id": "oregano-mono",
+    "storage_bucket": "oregano-mono.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:195351240193:android:378cd1521ac7935488ea00",
+        "android_client_info": {
+          "package_name": "com.mono.oregano"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "195351240193-9744cddb9rq4hboihl28nmds460f458k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPEdX-Q4bxt7YMp7cGLQQfr721bxOTK6o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "195351240193-95pj23cl7iv89e3fu175h5fb5kg0i5p9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:195351240193:android:e9e2e2edce25049288ea00",
+        "android_client_info": {
+          "package_name": "com.mono.oreganos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "195351240193-9744cddb9rq4hboihl28nmds460f458k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCPEdX-Q4bxt7YMp7cGLQQfr721bxOTK6o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "195351240193-95pj23cl7iv89e3fu175h5fb5kg0i5p9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

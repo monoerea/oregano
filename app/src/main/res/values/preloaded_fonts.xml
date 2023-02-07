@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/</item>
+        <item>@font/alice</item>
+        <item>@font/archivo</item>
+        <item>@font/montserrat_subrayada</item>
+        <item>@font/muli</item>
+        <item>@font/muli_bold</item>
+        <item>@font/muli_semibold</item>
+    </array>
+</resources>

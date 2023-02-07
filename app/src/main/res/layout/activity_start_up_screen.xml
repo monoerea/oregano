@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/start_screen"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/teal_700"
+    android:padding="@dimen/activity_horizontal_margin"
+    tools:context=".ui.StartUpScreenActivity">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/logo_img"
+            layout="@layout/image_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"/>
+
+        <include
+
+            android:id="@+id/logo_text"
+            layout="@layout/text_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/logo_img"
+            android:layout_marginTop="@dimen/margin_medium" />
+
+        <TextView
+            android:id="@+id/tag_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/logo_text"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/muli_semibold"
+            android:text="@string/start_welcome"
+            android:textAlignment="center"
+            android:textColor="@color/white" />
+
+        <LinearLayout
+            android:id="@+id/linear_button"
+            android:layout_marginTop="@dimen/margin_spacer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tag_line"
+            android:layout_centerHorizontal="true"
+
+            android:orientation="horizontal">
+
+            <include
+                android:id="@+id/sign_in_btn"
+                layout="@layout/button_design" />
+
+            <include
+                android:id="@+id/register_btn"
+                layout="@layout/button_design"
+                android:text="@string/action_sign_in" />
+        </LinearLayout>
+
+        <include
+            android:layout_width="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/linear_button"
+            android:text="@string/prompt_redirect"
+            android:textColor="@color/white"
+            layout="@layout/transparent_btn"
+            />
+
+    </RelativeLayout>
+</ScrollView>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Muted Color -->
+    <color name="background_muted_purple">#4F60AA</color>
+    <color name="muted_blue">#4F77AA</color>
+    <color name="muted_light_blue">#4F8DAA</color>
+    <color name="muted_blue_green">#4FA4AA</color>
+    <color name="vibrant_yellow_green">#4FAA6C</color>
+    <color name="cool_green">#4FAA82</color>
+    <!-- Oregano Color -->
+    <color name="oregano">#888A5D</color>
+    <color name="oregano_mid">#679C87</color>
+    <color name="oregano_shade">#707070</color>
+</resources>
