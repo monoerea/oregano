@@ -24,6 +24,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.mono.oregano.R;
+import com.mono.oregano.data.repository.baseRepository;
 import com.mono.oregano.data.repository.user.AuthRepository;
 import com.mono.oregano.databinding.FragmentRegisterBinding;
 import com.mono.oregano.ui.BaseFragment;
@@ -54,7 +55,7 @@ public class RegisterFragment extends BaseFragment<RegisterViewModel, FragmentRe
 
     @Override
     protected AuthRepository getFragmentRepository() {
-        return AuthRepository.getInstance(dataSources);
+        return AuthRepository.getInstance();
     }
 
     @Override
@@ -65,7 +66,7 @@ public class RegisterFragment extends BaseFragment<RegisterViewModel, FragmentRe
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        registerViewModel = new ViewModelProvider(this, new ViewModelFactory())
+        registerViewModel = new ViewModelProvider(this, new ViewModelFactory(AuthRepository.getInstance()))
                 .get(RegisterViewModel.class);
         
         final TextInputLayout fNameEditText = binding.firstName.getRoot();
@@ -82,16 +83,16 @@ public class RegisterFragment extends BaseFragment<RegisterViewModel, FragmentRe
 
         registerViewModel.getRegisFormState().observe(getViewLifecycleOwner(), new Observer<AuthFormState>() {
             @Override
-            public void onChanged(@Nullable AuthFormState loginFormState) {
-                if (loginFormState == null) {
+            public void onChanged(@Nullable AuthFormState regisFormState) {
+                if (regisFormState == null) {
                     return;
                 }
-                registerButton.setEnabled(loginFormState.isDataValid());
-                if (loginFormState.getEmailError() != null) {
-                    emailEditText.setError(getString(loginFormState.getEmailError()));
+                registerButton.setEnabled(regisFormState.isDataValid());
+                if (regisFormState.getEmailError() != null) {
+                    emailEditText.setError(getString(regisFormState.getEmailError()));
                 }
-                if (loginFormState.getPasswordError() != null) {
-                    passwordEditText.setError(getString(loginFormState.getPasswordError()));
+                if (regisFormState.getPasswordError() != null) {
+                    passwordEditText.setError(getString(regisFormState.getPasswordError()));
                 }
             }
         });
@@ -132,7 +133,7 @@ public class RegisterFragment extends BaseFragment<RegisterViewModel, FragmentRe
                         genderDropDown.getEditText().getText().toString(),
                         schoolNumEditText.getEditText().getText().toString(),
                         emailEditText.getEditText().getText().toString(),
-                        passwordEditText.getEditText().toString());
+                        passwordEditText.getEditText().getText().toString());
             }
         };
         emailEditText.getEditText().addTextChangedListener(afterTextChangedListener);
@@ -174,7 +175,7 @@ public class RegisterFragment extends BaseFragment<RegisterViewModel, FragmentRe
         //TODO: convert to non-static impl
         String[] items = {"Agender", "Cisgender", "Genderfluid","Nonbinary","Transgender"};
 
-        adapterItems = new ArrayAdapter<String>(context, R.layout.list_item, items);
+        adapterItems = new ArrayAdapter<>(context, R.layout.list_item, items);
         dropdown.setAdapter(adapterItems);
     }
 

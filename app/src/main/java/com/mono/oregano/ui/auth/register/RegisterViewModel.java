@@ -22,7 +22,7 @@ public class RegisterViewModel extends AuthViewModel{
     private MutableLiveData<AuthResult> regisResult = new MutableLiveData<>();
     private AuthRepository authRepository;
 
-    RegisterViewModel(AuthRepository authRepository) {
+    public RegisterViewModel(AuthRepository authRepository) {
         super(authRepository);
         this.authRepository = authRepository;
     }

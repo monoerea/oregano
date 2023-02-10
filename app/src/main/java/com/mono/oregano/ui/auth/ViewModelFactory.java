@@ -5,8 +5,10 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.mono.oregano.data.network.FirebaseAuthInstance;
+import com.mono.oregano.data.network.FirebaseDBInstance;
 import com.mono.oregano.data.repository.baseRepository;
 import com.mono.oregano.data.repository.user.AuthRepository;
+import com.mono.oregano.ui.auth.login.LoginViewModel;
 
 public class ViewModelFactory implements ViewModelProvider.Factory {
     @NonNull
@@ -14,18 +16,16 @@ public class ViewModelFactory implements ViewModelProvider.Factory {
 
     private baseRepository repository;
 
-
-
-    public ViewModelFactory() {
-    }
-
-    public ViewModelFactory(baseRepository repository) {
-        this.repository = repository;
+    public <BR extends baseRepository> ViewModelFactory(BR fragmentRepository) {
+        this.repository = fragmentRepository;
     }
 
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(AuthViewModel.class)) {
-            return (T) new AuthViewModel((AuthRepository) baseRepository.getInstance(new FirebaseAuthInstance()));
+            return (T) new AuthViewModel((AuthRepository) repository);
+        }
+        if (modelClass.isAssignableFrom(LoginViewModel.class)) {
+            return (T) new LoginViewModel((AuthRepository) repository);
         }
         else {
             throw new IllegalArgumentException("Unknown ViewModel class");

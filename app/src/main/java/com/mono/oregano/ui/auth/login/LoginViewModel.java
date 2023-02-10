@@ -2,9 +2,6 @@ package com.mono.oregano.ui.auth.login;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
-
-import android.util.Patterns;
 
 import com.mono.oregano.data.repository.Result;
 import com.mono.oregano.data.dataModel.users.LoggedInUser;
@@ -16,18 +13,18 @@ import com.mono.oregano.ui.auth.AuthViewModel;
 
 public class LoginViewModel extends AuthViewModel {
 
-    private MutableLiveData<AuthFormState> loginFormState = authFormState;
-    private MutableLiveData<AuthResult> loginResult = authResult;
+    private MutableLiveData<LoginFormState> loginFormState = new MutableLiveData<>();
+    private MutableLiveData<LoginResult> loginResult = new MutableLiveData<>();
 
-    LoginViewModel(AuthRepository authRepository) {
+    public LoginViewModel(AuthRepository authRepository) {
         super(authRepository);
     }
 
-    LiveData<AuthFormState> getLoginFormState() {
+    public LiveData<LoginFormState> getLoginFormState() {
         return loginFormState;
     }
 
-    LiveData<AuthResult> getLoginResult() {
+    public LiveData<LoginResult> getLoginResult() {
         return loginResult;
     }
 
@@ -37,18 +34,18 @@ public class LoginViewModel extends AuthViewModel {
 
         if (result instanceof Result.Success) {
             LoggedInUser data = ((Result.Success<LoggedInUser>) result).getData();
-            loginResult.setValue(new AuthResult(new LoggedInUserView(data.getFullName())));
+            loginResult.setValue(new LoginResult(new LoggedInUserView(data.getFullName())));
         } else {
-            loginResult.setValue(new AuthResult(R.string.login_failed));
+            loginResult.setValue(new LoginResult(R.string.login_failed));
         }
     }
     public void loginDataChanged(String email, String password) {
         if (!isEmailValid(email)) {
-            loginFormState.setValue(new AuthFormState(R.string.invalid_email, null, null));
+            loginFormState.setValue(new LoginFormState(R.string.invalid_email, null));
         } else if (!isPasswordValid(password)) {
-            loginFormState.setValue(new AuthFormState(null, R.string.invalid_password, null));
+            loginFormState.setValue(new LoginFormState(null, R.string.invalid_password));
         } else {
-            loginFormState.setValue(new AuthFormState(true));
+            loginFormState.setValue(new LoginFormState(true));
         }
     }
 }

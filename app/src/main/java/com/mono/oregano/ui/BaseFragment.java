@@ -32,7 +32,6 @@ public abstract class BaseFragment<VM extends  ViewModel,VB extends ViewBinding,
         ViewModelFactory factory = new ViewModelFactory(getFragmentRepository());
         vModel = new ViewModelProvider(this, factory).get(getViewModel());
         return binding.getRoot();
-
     }
     protected abstract Class<VM> getViewModel();
     protected abstract BR getFragmentRepository();

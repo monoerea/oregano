@@ -18,11 +18,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 
-public class FirebaseDBInstance implements DataSources{
+public class FirebaseDBInstance implements DataSources {
 
-    private static FirebaseDBInstance instance;
-
-        private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private FirebaseDBInstance instance;
+    private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public Result<Document> searchByID(Model model, String id) {
         try {
@@ -55,21 +54,22 @@ public class FirebaseDBInstance implements DataSources{
     }
 
 
-    public CollectionReference createCollection(String colName){
+    public CollectionReference createCollection(String colName) {
         CollectionReference reference = db.collection(colName).getParent().collection(colName);
         return reference;
     }
 
-    public void add(Model model){
+    private Result<Model> add(Model model) {
         CollectionReference reference = db.collection(model.getModelName());
-        if ( reference == null){
+        if (reference == null) {
             reference = createCollection(model.getModelName());
         }
         reference.add(model);
+        return null;
     }
 
 
-    public Result<Model> getByID(Model model,String id) {
+    private Result<Model> getByID(Model model, String id) {
         //Returns one queried data
         CollectionReference reference = db.collection(model.getModelName());
         if (reference == null) {
@@ -95,10 +95,11 @@ public class FirebaseDBInstance implements DataSources{
         });
         return new Result.Success<>(result.get(0));
     }
-    public Result<ArrayList<Model>> queryByName(Model model, String name){
+
+    private Result<ArrayList<Model>> queryByName(Model model, String name) {
         CollectionReference reference;
         ArrayList<Model> queryData = new ArrayList<>();
-        if (db.collection(model.getModelName()) == null){
+        if (db.collection(model.getModelName()) == null) {
             createCollection(model.getModelName());
         }
         try {
@@ -107,7 +108,7 @@ public class FirebaseDBInstance implements DataSources{
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()){
+                            if (task.isSuccessful()) {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     queryData.add(document.toObject(Model.class));
                                 }
@@ -115,14 +116,14 @@ public class FirebaseDBInstance implements DataSources{
                         }
                     });
             return new Result.Success<>(queryData);
-        }catch (Exception e){
+        } catch (Exception e) {
             return new Result.Error(new IOException("Error logging in, User does not exist", e));
         }
     }
 
-    public Result<String> delete(String colRef, String colName,String id){
+    private Result<String> delete(String colRef, String colName, String id) {
         CollectionReference reference = db.collection(colRef);
-        if ( reference == null){
+        if (reference == null) {
             reference = createCollection(colName);
         }
         try {
@@ -134,9 +135,9 @@ public class FirebaseDBInstance implements DataSources{
         }
     }
 
-    public Result<String> update(Model model){
+    private Result<String> update(Model model) {
         CollectionReference reference = db.collection(model.getModelName());
-        if ( reference == null){
+        if (reference == null) {
             reference = createCollection(model.getModelName());
         }
         try {
@@ -147,22 +148,11 @@ public class FirebaseDBInstance implements DataSources{
         }
     }
 
-    @Override
-    public DataSources getInstance(DataSources sources) {
-        return null;
-    }
-
-    @Override
-    public FirebaseDBInstance getInstance(FirebaseDBInstance source) {
-        if (instance == null){
+    public DataSources getInstance() {
+        if (instance == null) {
             return new FirebaseDBInstance();
         }
         return instance;
-    }
-
-    @Override
-    public FirebaseAuthInstance getInstance(FirebaseAuthInstance sources) {
-        return null;
     }
 }
 

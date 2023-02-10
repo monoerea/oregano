@@ -4,15 +4,15 @@ import androidx.annotation.Nullable;
 
 public class AuthFormState {
     @Nullable
-    private Integer emailError;
+    protected Integer emailError;
     @Nullable
-    private Integer passwordError;
+    protected Integer passwordError;
 
-    private Integer schoolNumError;
-    private boolean isDataValid;
+    protected Integer schoolNumError;
+    protected boolean isDataValid;
 
-    public AuthFormState(@Nullable Integer usernameError, @Nullable Integer passwordError,  @Nullable Integer schoolNumError) {
-        this.emailError = usernameError;
+    public AuthFormState(@Nullable Integer emailError, @Nullable Integer passwordError,  @Nullable Integer schoolNumError) {
+        this.emailError = emailError;
         this.passwordError = passwordError;
         this.schoolNumError = schoolNumError;
         this.isDataValid = false;
@@ -25,6 +25,14 @@ public class AuthFormState {
         this.isDataValid = isDataValid;
     }
 
+    public AuthFormState(@Nullable Integer emailError,@Nullable Integer passwordError) {
+        this.emailError = emailError;
+        this.passwordError = passwordError;
+    }
+
+    public AuthFormState() {
+
+    }
 
     @Nullable
     public Integer getEmailError() {

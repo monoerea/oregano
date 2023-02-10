@@ -22,6 +22,7 @@
     <string name="prompt_checkbox_forgot">Forgot password?</string>
     <string name="action_sign_in_short">Sign in</string>
 
+    <string name="title_start">StartUp</string>
     <string name="title_activity_bottom_nav">BottomNavActivity</string>
     <string name="title_home">Home</string>
     <string name="title_discover">Discover</string>

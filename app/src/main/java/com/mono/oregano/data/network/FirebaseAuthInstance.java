@@ -87,23 +87,11 @@ public class FirebaseAuthInstance implements DataSources {
 
 
     @Override
-    public DataSources getInstance(DataSources sources) {
-        return null;
-    }
-
-    @Override
-    public FirebaseDBInstance getInstance(FirebaseDBInstance source) {
-        return null;
-    }
-
-    @Override
-    public FirebaseAuthInstance getInstance(FirebaseAuthInstance sources) {
-        if ((sources instanceof FirebaseAuthInstance) == false) {
-            return null;
-        }
+    public DataSources getInstance() {
         if (instance == null){
             return new FirebaseAuthInstance();
         }
         return instance;
     }
+
 }
