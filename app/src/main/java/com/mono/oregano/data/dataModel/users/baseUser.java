@@ -4,7 +4,6 @@ import com.mono.oregano.data.dataModel.Model;
 import com.mono.oregano.data.dataModel.Observer;
 import com.mono.oregano.data.dataModel.Posts;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -162,7 +161,7 @@ public class baseUser extends Observer implements Model{
 
     @Override
     public String getModelName() {
-        return this.getClass().getSimpleName();
+        return "User";
     }
     
     @Override

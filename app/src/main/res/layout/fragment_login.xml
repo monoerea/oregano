@@ -16,10 +16,17 @@
         android:layout_marginTop="@dimen/text_height"
         >
         <include
+            android:id="@+id/header_title"
+            layout ="@layout/header_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+        />
+        <include
             android:id="@+id/email"
             layout="@layout/edit_text_design"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_below="@id/header_title"/>
         <include
             android:id="@+id/password"
             layout="@layout/password_edit_text"

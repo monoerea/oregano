@@ -11,9 +11,9 @@
         tools:layout="@layout/activity_auth"/>
     <fragment
         android:id="@+id/startFragment"
-        android:name="com.mono.oregano.ui.StartUpScreenActivity"
+        android:name="com.mono.oregano.ui.StartScreenFragment"
         android:label="@string/action_sign_in"
-        tools:layout="@layout/fragment_start_up_screen">
+        tools:layout="@layout/fragment_start_screen">
         <action
             android:id="@+id/action_startFragment_to_registerFragment"
             app:destination="@id/registerFragment" />

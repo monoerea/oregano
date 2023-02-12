@@ -8,70 +8,48 @@
     android:background="@color/teal_700"
     android:padding="@dimen/activity_horizontal_margin"
     tools:context=".ui.auth.register.RegisterFragment">
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/text_fields"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:animateLayoutChanges="true"
         android:layout_marginTop="@dimen/text_height"
-        >
+        android:orientation="vertical">
         <include
             android:id="@+id/header_title"
             layout="@layout/header_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            />
         <include
             android:id="@+id/firstName"
             layout="@layout/edit_text_design"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/header_title"
             />
         <include
             android:id="@+id/midName"
             layout="@layout/edit_text_design"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/firstName"
             />
         <include
             android:id="@+id/lastName"
             layout="@layout/edit_text_design"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/midName"
             />
         <include
             android:id="@+id/gender"
             layout="@layout/drop_down_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/lastName"
             />
         <include
             android:id="@+id/schoolNum"
             layout="@layout/edit_text_design"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/gender"
             />
         <include
             android:id="@+id/email"
-            layout="@layout/edit_text_design"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/schoolNum"/>
+            layout="@layout/edit_text_design" />
         <include
             android:id="@+id/password"
             layout="@layout/password_edit_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/email"/>
+            />
         <RelativeLayout
             android:id ="@+id/redirects"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/password">
+            android:layout_height="wrap_content">
             <include
                 android:id="@+id/checkbox"
                 layout="@layout/checkbox_view"/>
@@ -86,17 +64,12 @@
         <include
             android:id="@+id/register"
             layout="@layout/button_design"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/redirects">
+>
         </include>
 
         <include
             android:id="@+id/login_now"
-            layout="@layout/transparent_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/register"/>
+            layout="@layout/transparent_btn" />
 
         <include
             android:id="@+id/progress_bar"
@@ -108,5 +81,5 @@
             app:layout_constraintVertical_bias="0.3">
 
         </include>
-    </RelativeLayout>
+    </LinearLayout>
 </ScrollView>

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/teal_700"
     android:padding="@dimen/activity_horizontal_margin"
-    tools:context=".ui.StartUpScreenActivity">
+    tools:context=".ui.StartScreenFragment">
 
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -43,7 +43,7 @@
         <LinearLayout
             android:id="@+id/linear_button"
             android:layout_marginTop="@dimen/margin_spacer"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tag_line"
             android:layout_centerHorizontal="true"
@@ -57,7 +57,7 @@
             <include
                 android:id="@+id/register_btn"
                 layout="@layout/button_design"
-                android:text="@string/action_sign_in" />
+                android:text="@string/action_sign_up" />
         </LinearLayout>
 
         <include

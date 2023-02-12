@@ -1,6 +1,9 @@
 package com.mono.oregano.data.network;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -10,8 +13,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.model.Document;
 import com.mono.oregano.data.dataModel.Model;
+import com.mono.oregano.data.dataModel.users.baseUser;
 import com.mono.oregano.data.repository.Result;
 
 import java.io.IOException;
@@ -23,7 +26,7 @@ public class FirebaseDBInstance implements DataSources {
     private FirebaseDBInstance instance;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    public Result<Document> searchByID(Model model, String id) {
+    public Result<baseUser> searchByID(Model model, String id) {
         try {
             // Attempts signing using the given
             getByID(model, id);
@@ -34,10 +37,10 @@ public class FirebaseDBInstance implements DataSources {
         }
     }
 
-    public Result<Model> insert(Model model) {
+    public Result<Model> insert(@Nullable String colRef , Model model) {
         try {
             // Attempts signing using the given
-            add(model);
+            add(colRef,model);
             // TODO: handle loggedInUser authentication
             return new Result.Success(model);
         } catch (Exception e) {
@@ -59,13 +62,22 @@ public class FirebaseDBInstance implements DataSources {
         return reference;
     }
 
-    private Result<Model> add(Model model) {
-        CollectionReference reference = db.collection(model.getModelName());
+    private void add(@Nullable String colRef, Model model) {
+        CollectionReference reference = null;
+        if (colRef == null){
+            reference = db.collection(model.getModelName());
+        }
         if (reference == null) {
             reference = createCollection(model.getModelName());
         }
-        reference.add(model);
-        return null;
+        reference.add(model).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentReference> task) {
+                if (task.isSuccessful()){
+                    Log.d("Success","Insert success");
+                }
+            }
+        });
     }
 
 

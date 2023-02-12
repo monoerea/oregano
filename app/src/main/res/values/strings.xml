@@ -37,4 +37,14 @@
         <item>Nonbinary</item>
         <item>Transgender</item>
     </string-array>
+    <string-array name="array_sign">
+        <item>Sign in</item>
+        <item>Sign up</item>
+    </string-array>
+
+    <string name="first_name">First Name</string>
+    <string name="mid_name">Middle Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="gender">Gender</string>
+    <string name="school_num">School Number</string>
 </resources>

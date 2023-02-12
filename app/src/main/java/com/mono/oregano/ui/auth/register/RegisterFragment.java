@@ -24,35 +24,34 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.mono.oregano.R;
-import com.mono.oregano.data.repository.baseRepository;
 import com.mono.oregano.data.repository.user.AuthRepository;
+import com.mono.oregano.databinding.DropDownEditTextBinding;
 import com.mono.oregano.databinding.FragmentRegisterBinding;
+import com.mono.oregano.domain.util.uiUtil;
 import com.mono.oregano.ui.BaseFragment;
 import com.mono.oregano.ui.auth.AuthFormState;
 import com.mono.oregano.ui.auth.AuthResult;
+import com.mono.oregano.ui.auth.AuthUserView;
+import com.mono.oregano.ui.auth.AuthViewModel;
 import com.mono.oregano.ui.auth.ViewModelFactory;
 
-public class RegisterFragment extends BaseFragment<RegisterViewModel, FragmentRegisterBinding, AuthRepository> {
+public class RegisterFragment extends BaseFragment<AuthViewModel, FragmentRegisterBinding, AuthRepository> {
 
-    private RegisterViewModel registerViewModel;
+    private AuthViewModel registerViewModel;
     private FragmentRegisterBinding binding;
 
-    @Nullable
-    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
-        binding = FragmentRegisterBinding.inflate(inflater, container, false);
+        binding = getFragmentBinding(inflater, container);
+        ViewModelFactory factory = new ViewModelFactory(getFragmentRepository());
+        vModel = new ViewModelProvider(this, factory).get(getViewModel());
         return binding.getRoot();
-
     }
-
     @Override
-    protected Class<RegisterViewModel> getViewModel() {
-        return RegisterViewModel.class;
+    protected Class<AuthViewModel> getViewModel() {
+        return AuthViewModel.class;
     }
-
     @Override
     protected AuthRepository getFragmentRepository() {
         return AuthRepository.getInstance();
@@ -67,37 +66,78 @@ public class RegisterFragment extends BaseFragment<RegisterViewModel, FragmentRe
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         registerViewModel = new ViewModelProvider(this, new ViewModelFactory(AuthRepository.getInstance()))
-                .get(RegisterViewModel.class);
-        
+                .get(AuthViewModel.class);
+        binding.headerTitle.getRoot().setText(R.string.action_sign_up);
         final TextInputLayout fNameEditText = binding.firstName.getRoot();
         final TextInputLayout mNameEditText = binding.midName.getRoot();
         final TextInputLayout lNameEditText = binding.lastName.getRoot();
-        final TextInputLayout genderDropDown = binding.gender.getRoot();
+        final DropDownEditTextBinding genderDropDown = binding.gender;
         final TextInputLayout schoolNumEditText = binding.schoolNum.getRoot();
         final TextInputLayout emailEditText = binding.email.getRoot();
         final TextInputLayout passwordEditText = binding.password.getRoot();
         final Button registerButton = binding.register.getRoot();
+        final Button signIn = binding.loginNow.getRoot();
         final ProgressBar loadingProgressBar = binding.progressBar.getRoot();
 
-        setUI(this.getContext(),genderDropDown.findViewById(R.id.autofill));
 
-        registerViewModel.getRegisFormState().observe(getViewLifecycleOwner(), new Observer<AuthFormState>() {
+        fNameEditText.setHint(R.string.first_name);
+        mNameEditText.setHint(R.string.mid_name);
+        lNameEditText.setHint(R.string.last_name);
+        genderDropDown.getRoot().setHint(R.string.gender);
+        schoolNumEditText.setHint(R.string.school_num);
+
+        setDropDown(this.getContext(),genderDropDown.autofill);
+
+        signIn.setText("Already have an account? Login now!");
+        signIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                uiUtil.navigate(binding.getRoot(), binding.loginNow.getRoot(), R.id.action_registerFragment_to_loginFragment);
+            }
+        });
+        registerViewModel.getAuthState().observe(getViewLifecycleOwner(), new Observer<AuthFormState>() {
             @Override
             public void onChanged(@Nullable AuthFormState regisFormState) {
                 if (regisFormState == null) {
                     return;
                 }
                 registerButton.setEnabled(regisFormState.isDataValid());
+
+                if (regisFormState.getFirstNameError()!= null){
+                    fNameEditText.setError(getString(regisFormState.getFirstNameError()));
+                }else {
+                    fNameEditText.setError(null);
+                }
+                if (regisFormState.getMidNameError()!= null){
+                    mNameEditText.setError(getString(regisFormState.getMidNameError()));
+                }else {
+                    mNameEditText.setError(null);
+                }
+                if (regisFormState.getLastNameError()!= null){
+                    lNameEditText.setError(getString(regisFormState.getLastNameError()));
+                }else {
+                    lNameEditText.setError(null);
+                }
+                if (regisFormState.getSchoolNumError()!= null){
+                    schoolNumEditText.setError(getString(regisFormState.getSchoolNumError()));
+                }else{
+                    schoolNumEditText.setError(null);
+                }
+
                 if (regisFormState.getEmailError() != null) {
                     emailEditText.setError(getString(regisFormState.getEmailError()));
+                }else {
+                    emailEditText.setError(null);
                 }
                 if (regisFormState.getPasswordError() != null) {
                     passwordEditText.setError(getString(regisFormState.getPasswordError()));
+                }else{
+                    passwordEditText.setError(null);
                 }
             }
         });
 
-        registerViewModel.getRegisResult().observe(getViewLifecycleOwner(), new Observer<AuthResult>() {
+        registerViewModel.getAuthResult().observe(getViewLifecycleOwner(), new Observer<AuthResult>() {
             @Override
             public void onChanged(@Nullable AuthResult regisResult) {
                 if (regisResult == null) {
@@ -105,10 +145,10 @@ public class RegisterFragment extends BaseFragment<RegisterViewModel, FragmentRe
                 }
                 loadingProgressBar.setVisibility(View.GONE);
                 if (regisResult.getError() != null) {
-                    showLoginFailed(regisResult.getError());
+                    showRegisFailed(regisResult.getError());
                 }
                 if (regisResult.getSuccess() != null) {
-                    updateUiWithUser((RegisteredUserView) regisResult.getSuccess());
+                    updateUiWithUser(regisResult.getSuccess());
                 }
             }
         });
@@ -130,7 +170,7 @@ public class RegisterFragment extends BaseFragment<RegisterViewModel, FragmentRe
                 registerViewModel.regisDataChanged(fNameEditText.getEditText().getText().toString(),
                         mNameEditText.getEditText().getText().toString(),
                         lNameEditText.getEditText().getText().toString(),
-                        genderDropDown.getEditText().getText().toString(),
+                        genderDropDown.getRoot().getEditText().getText().toString(),
                         schoolNumEditText.getEditText().getText().toString(),
                         emailEditText.getEditText().getText().toString(),
                         passwordEditText.getEditText().getText().toString());
@@ -146,7 +186,7 @@ public class RegisterFragment extends BaseFragment<RegisterViewModel, FragmentRe
                     registerViewModel.register(fNameEditText.getEditText().getText().toString(),
                             mNameEditText.getEditText().getText().toString(),
                             lNameEditText.getEditText().getText().toString(),
-                            genderDropDown.getEditText().getText().toString(),
+                            genderDropDown.getRoot().getEditText().getText().toString(),
                             schoolNumEditText.getEditText().getText().toString(),
                             emailEditText.getEditText().getText().toString(),
                             passwordEditText.getEditText().toString());
@@ -162,7 +202,7 @@ public class RegisterFragment extends BaseFragment<RegisterViewModel, FragmentRe
                 registerViewModel.register(fNameEditText.getEditText().getText().toString(),
                         mNameEditText.getEditText().getText().toString(),
                         lNameEditText.getEditText().getText().toString(),
-                        genderDropDown.getEditText().getText().toString(),
+                        genderDropDown.getRoot().getEditText().getText().toString(),
                         schoolNumEditText.getEditText().getText().toString(),
                         emailEditText.getEditText().getText().toString(),
                         passwordEditText.getEditText().toString());
@@ -170,16 +210,14 @@ public class RegisterFragment extends BaseFragment<RegisterViewModel, FragmentRe
         });
     }
 
-    public void setUI(Context context, AutoCompleteTextView dropdown){
-        ArrayAdapter<String> adapterItems;
+    public void setDropDown(Context context, AutoCompleteTextView dropdown){
         //TODO: convert to non-static impl
-        String[] items = {"Agender", "Cisgender", "Genderfluid","Nonbinary","Transgender"};
-
-        adapterItems = new ArrayAdapter<>(context, R.layout.list_item, items);
+        String[] items = new String[]{"Agender", "Cisgender", "Genderfluid","Nonbinary","Transgender"};
+        ArrayAdapter<String> adapterItems = new ArrayAdapter<>(context, R.layout.list_item, items);
         dropdown.setAdapter(adapterItems);
     }
 
-    private void updateUiWithUser(RegisteredUserView model) {
+    private void updateUiWithUser(AuthUserView model) {
         String welcome = getString(R.string.welcome) + model.getFullName();
         // TODO : initiate successful logged in experience
         if (getContext() != null && getContext().getApplicationContext() != null) {
@@ -187,7 +225,7 @@ public class RegisterFragment extends BaseFragment<RegisterViewModel, FragmentRe
         }
     }
 
-    private void showLoginFailed(@StringRes Integer errorString) {
+    private void showRegisFailed(@StringRes Integer errorString) {
         if (getContext() != null && getContext().getApplicationContext() != null) {
             Toast.makeText(
                     getContext().getApplicationContext(),

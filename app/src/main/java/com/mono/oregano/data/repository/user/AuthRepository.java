@@ -1,13 +1,13 @@
 package com.mono.oregano.data.repository.user;
 
-import com.mono.oregano.data.network.DataSources;
-import com.mono.oregano.data.repository.baseRepository;
 import com.mono.oregano.data.dataModel.Model;
 import com.mono.oregano.data.dataModel.users.LoggedInUser;
 import com.mono.oregano.data.dataModel.users.baseUser;
+import com.mono.oregano.data.network.DataSources;
 import com.mono.oregano.data.network.FirebaseAuthInstance;
 import com.mono.oregano.data.network.FirebaseDBInstance;
 import com.mono.oregano.data.repository.Result;
+import com.mono.oregano.data.repository.baseRepository;
     //TODO: never pass in direct objects, just pass the id or object reference to follow the Single source of truth
 public class AuthRepository extends baseRepository {
     private static AuthRepository instance;
@@ -22,14 +22,7 @@ public class AuthRepository extends baseRepository {
         this.loginInstance = LoginRepository.getInstance(authInstance);
         this.regisInstance = RegisRepository.getInstance(authInstance);
     }
-    /**
-    public static AuthRepository getInstance() {
-        if (instance == null) {
-            instance = new AuthRepository();
-        }
-        return instance;
-    }
-     **/
+
     public static AuthRepository getInstance(){
         if (instance == null) {
             instance = new AuthRepository();
@@ -42,6 +35,10 @@ public class AuthRepository extends baseRepository {
             instance = new AuthRepository();
         }
         return instance;
+    }
+
+    public void signOut(){
+        loginInstance.logout();
     }
     public Result<LoggedInUser> logIn(String email, String password){
     Result<LoggedInUser> result = loginInstance.login(email, password);
@@ -58,8 +55,12 @@ public class AuthRepository extends baseRepository {
             //TODO: think about the system structure where to have multiple boilerplate code or not
             // via segmenting for each business object or pass a general model like rn
             //NEED TO TEST ASAP
-        Result<Model> result = dataSource.insert((Model) user);
+        Result<Model> result = dataSource.insert(null,(Model) user);
+        Result<Model> clients = dataSource.insert("Clients",(Model) user);
 
+        if (clients instanceof Result.Error){
+            return result;
+        }
         if (result instanceof Result.Error){
             return result;
         }

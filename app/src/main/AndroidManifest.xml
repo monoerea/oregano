@@ -12,11 +12,11 @@
         android:theme="@style/Theme.Oregano"
         tools:targetApi="31">
         <activity
-            android:name=".ui.auth.BottomNavActivity"
+            android:name=".ui.BaseFragment$BottomNavActivity"
             android:exported="false"
             android:label="@string/title_activity_bottom_nav" />
         <activity
-            android:name=".ui.StartUpScreenActivity"
+            android:name=".ui.StartScreenFragment"
             android:exported="false"
             android:label="@string/title_start" />
         <activity

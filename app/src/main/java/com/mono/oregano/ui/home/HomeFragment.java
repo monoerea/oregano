@@ -7,12 +7,13 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.mono.oregano.data.repository.user.UserRepository;
 import com.mono.oregano.databinding.FragmentHomeBinding;
+import com.mono.oregano.ui.BaseFragment;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends BaseFragment<HomeViewModel, FragmentHomeBinding, UserRepository> {
 
     private FragmentHomeBinding binding;
 
@@ -27,6 +28,21 @@ public class HomeFragment extends Fragment {
         final TextView textView = binding.textHome;
         homeViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
+    }
+
+    @Override
+    protected Class<HomeViewModel> getViewModel() {
+        return HomeViewModel.class;
+    }
+
+    @Override
+    protected UserRepository getFragmentRepository() {
+        return UserRepository.getInstance();
+    }
+
+    @Override
+    protected FragmentHomeBinding getFragmentBinding(LayoutInflater inflater, ViewGroup container) {
+        return null;
     }
 
     @Override

@@ -1,10 +1,5 @@
 package com.mono.oregano.ui.auth.login;
 
-import androidx.annotation.StringRes;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,16 +9,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.google.android.material.textfield.TextInputLayout;
 import com.mono.oregano.R;
-import com.mono.oregano.data.repository.baseRepository;
 import com.mono.oregano.data.repository.user.AuthRepository;
 import com.mono.oregano.databinding.FragmentLoginBinding;
-
+import com.mono.oregano.domain.util.uiUtil;
 import com.mono.oregano.ui.BaseFragment;
 import com.mono.oregano.ui.auth.AuthUserView;
 import com.mono.oregano.ui.auth.AuthViewModel;
@@ -34,14 +34,13 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
     private AuthViewModel loginViewModel;
     private FragmentLoginBinding binding;
 
-    @Nullable
-    @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-
-      binding = FragmentLoginBinding.inflate(inflater, container, false);
-      return binding.getRoot();
+        binding = getFragmentBinding(inflater, container);
+        ViewModelFactory factory = new ViewModelFactory(getFragmentRepository());
+        vModel = new ViewModelProvider(this, factory).get(getViewModel());
+        return binding.getRoot();
     }
 
     @Override
@@ -54,7 +53,7 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
     }
     @Override
     protected FragmentLoginBinding getFragmentBinding(LayoutInflater inflater, ViewGroup container) {
-        return binding;
+        return FragmentLoginBinding.inflate(inflater, container, false);
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -62,26 +61,39 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
         loginViewModel = new ViewModelProvider(this, new ViewModelFactory(AuthRepository.getInstance()))
                 .get(AuthViewModel.class);
 
-        final TextInputLayout usernameEditText = binding.email.getRoot();
+        final TextInputLayout emailRoot = binding.email.getRoot();
         final TextInputLayout passwordEditText = binding.password.getRoot();
         final Button loginButton = binding.login.getRoot();
         final ProgressBar loadingProgressBar = binding.progressBar.getRoot();
+        final Button signUp = binding.createAccount.getRoot();
+
+        binding.headerTitle.getRoot().setText(R.string.action_sign_in);
+        signUp.setText(R.string.prompt_redirect);
+
+        signUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                uiUtil.navigate(binding.getRoot(), binding.createAccount.getRoot(), R.id.action_loginFragment_to_registerFragment);
+            }
+        });
 
         loginViewModel.getAuthState().observe(getViewLifecycleOwner(), loginFormState -> {
             if (loginFormState == null) {
                 return;
             }
             loginButton.setEnabled(loginFormState.isDataValid());
-            if (loginFormState.getEmailError() != null) {
-                usernameEditText.setError(getString(loginFormState.getEmailError()));
-            }else{
-                usernameEditText.setError(null);
-            }
+
             if (loginFormState.getPasswordError() != null) {
                 passwordEditText.setError(getString(loginFormState.getPasswordError()));
             }else{
                 passwordEditText.setError(null);
             }
+            if (loginFormState.getEmailError() != null) {
+                emailRoot.setError(getString(loginFormState.getEmailError()));
+            }else{
+                emailRoot.setError(null);
+            }
+
         });
 
         loginViewModel.getAuthResult().observe(getViewLifecycleOwner(), loginResult -> {
@@ -110,17 +122,17 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
 
             @Override
             public void afterTextChanged(Editable s) {
-                loginViewModel.loginDataChanged(usernameEditText.getEditText().getText().toString(),
+                loginViewModel.loginDataChanged(emailRoot.getEditText().getText().toString(),
                         passwordEditText.getEditText().toString());
             }
         };
-        usernameEditText.getEditText().addTextChangedListener(afterTextChangedListener);
+        emailRoot.getEditText().addTextChangedListener(afterTextChangedListener);
         passwordEditText.getEditText().addTextChangedListener(afterTextChangedListener);
         passwordEditText.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    loginViewModel.login(usernameEditText.getEditText().getText().toString(),
+                    loginViewModel.login(emailRoot.getEditText().getText().toString(),
                             passwordEditText.getEditText().getText().toString());
                 }
                 return false;
@@ -131,10 +143,12 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
             @Override
             public void onClick(View v) {
                 loadingProgressBar.setVisibility(View.VISIBLE);
-                loginViewModel.login(usernameEditText.getEditText().getText().toString(),
+                loginViewModel.login(emailRoot.getEditText().getText().toString(),
                         passwordEditText.getEditText().getText().toString());
             }
         });
+
+
     }
 
     private void updateUiWithUser(AuthUserView model) {
@@ -143,6 +157,7 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
         if (getContext() != null && getContext().getApplicationContext() != null) {
             Toast.makeText(getContext().getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
         }
+
     }
 
     private void showLoginFailed(@StringRes Integer errorString) {
@@ -156,6 +171,8 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
 
 @Override
     public void onDestroyView() {
+        final CheckBox checkBox = binding.checkbox.getRoot();
+        loginViewModel.signOut(checkBox.isChecked());
         super.onDestroyView();
         binding = null;
     }
