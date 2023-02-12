@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.mono.oregano.R;
+import com.mono.oregano.data.dataModel.Model;
 import com.mono.oregano.data.dataModel.users.LoggedInUser;
 import com.mono.oregano.data.dataModel.users.baseUser;
 import com.mono.oregano.data.repository.Result;
@@ -36,7 +37,7 @@ public class RegisterViewModel extends AuthViewModel{
 
     public void register(String firstName, String midName, String lastName, String gender, String schoolNo,String email, String password) {
         // can be launched in a separate asynchronous job
-        Result<baseUser> result = authRepository.registerLogin(firstName, midName, lastName, gender, schoolNo,email, password);
+        Result<? extends Model> result = authRepository.registerLogin(firstName, midName, lastName, gender, schoolNo,email, password);
 
         if (result instanceof Result.Success) {
             baseUser data = ((Result.Success<baseUser>) result).getData();

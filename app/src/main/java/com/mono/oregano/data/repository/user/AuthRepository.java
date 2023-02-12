@@ -48,7 +48,7 @@ public class AuthRepository extends baseRepository {
     return result;
     }
 
-    public Result registerLogin(String firstName, String midName, String lastName, String gender, String schoolNo,String email, String password){
+    public Result<? extends Model> registerLogin(String firstName, String midName, String lastName, String gender, String schoolNo,String email, String password){
         Result<baseUser> user =  regisInstance.register(firstName, midName, lastName, gender, schoolNo, email, password);
 
         if (user instanceof Result.Error){

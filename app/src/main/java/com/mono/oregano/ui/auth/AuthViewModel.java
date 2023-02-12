@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.mono.oregano.R;
+import com.mono.oregano.data.dataModel.Model;
 import com.mono.oregano.data.dataModel.users.LoggedInUser;
 import com.mono.oregano.data.dataModel.users.baseUser;
 import com.mono.oregano.data.repository.Result;
@@ -49,7 +50,7 @@ public class AuthViewModel extends ViewModel {
     }
 
     public void loginDataChanged(String email, String password) {
-        if (!isUserNameValid(email)) {
+        if (!isEmailValid(email)) {
             authFormState.setValue(new AuthFormState(R.string.invalid_email, null, null));
         } else if (!isPasswordValid(password)) {
             authFormState.setValue(new AuthFormState(null, R.string.invalid_password, null));
@@ -60,7 +61,7 @@ public class AuthViewModel extends ViewModel {
 
     public void register(String firstName, String midName, String lastName, String gender, String schoolNo,String email, String password) {
         // can be launched in a separate asynchronous job
-        Result<baseUser> result = authRepository.registerLogin(firstName, midName, lastName, gender, schoolNo,email, password);
+        Result<? extends Model> result = authRepository.registerLogin(firstName, midName, lastName, gender, schoolNo,email, password);
 
         if (result instanceof Result.Success) {
             baseUser data = ((Result.Success<baseUser>) result).getData();
@@ -97,38 +98,22 @@ public class AuthViewModel extends ViewModel {
         }
     }
 
-    private boolean isUserNameValid(String username) {
+    // A placeholder password validation check
+    protected boolean isPasswordValid(String password) {
+        String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–_[{}]:;',?/*~$^+=<>]).{8,20}$";
+        Pattern PASSWORD = Pattern.compile(regex);
+        return password != null && PASSWORD.matcher(password).matches();
+    }
+
+    protected boolean isEmailValid(String username) {
         if (username == null) {
             return false;
         }
-        //TODO: if username in database return false
-        if (username.contains("@")) {
-            return Patterns.EMAIL_ADDRESS.matcher(username).matches();
+        if (!username.contains("@")) {
+            return username.trim().isEmpty();
         } else {
-            return !username.trim().isEmpty();
+            return Patterns.EMAIL_ADDRESS.matcher(username).matches();
         }
-    }
-
-    // A placeholder password validation check
-    protected boolean isPasswordValid(String password) {
-        //regex for password
-        String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,20}$";
-        Pattern PASSWORD = Pattern.compile(regex);
-
-        if (password == null) {
-            return false;
-        }
-        if (password.trim().length() > 15) {
-            return PASSWORD.matcher(password).matches();
-        }
-        return !password.trim().isEmpty();
-    }
-
-    protected boolean isEmailValid(String email) {
-        if (email == null) {
-            return false;
-        }
-        return Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
     protected boolean isSchoolNumValid(String schoolNum) {

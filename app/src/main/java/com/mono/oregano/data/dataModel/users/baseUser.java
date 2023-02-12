@@ -52,6 +52,7 @@ public class baseUser extends Observer implements Model{
     }
 
     public baseUser(String id, String email) {
+        super();
         this.id = id;
         this.email = email;
     }

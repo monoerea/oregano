@@ -25,6 +25,7 @@ import com.mono.oregano.data.repository.user.AuthRepository;
 import com.mono.oregano.databinding.FragmentLoginBinding;
 
 import com.mono.oregano.ui.BaseFragment;
+import com.mono.oregano.ui.auth.AuthUserView;
 import com.mono.oregano.ui.auth.AuthViewModel;
 import com.mono.oregano.ui.auth.ViewModelFactory;
 
@@ -73,9 +74,13 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
             loginButton.setEnabled(loginFormState.isDataValid());
             if (loginFormState.getEmailError() != null) {
                 usernameEditText.setError(getString(loginFormState.getEmailError()));
+            }else{
+                usernameEditText.setError(null);
             }
             if (loginFormState.getPasswordError() != null) {
                 passwordEditText.setError(getString(loginFormState.getPasswordError()));
+            }else{
+                passwordEditText.setError(null);
             }
         });
 
@@ -88,7 +93,7 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
                 showLoginFailed(loginResult.getError());
             }
             if (loginResult.getSuccess() != null) {
-                updateUiWithUser((LoggedInUserView) loginResult.getSuccess());
+                updateUiWithUser(loginResult.getSuccess());
             }
         });
 
@@ -112,7 +117,6 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
         usernameEditText.getEditText().addTextChangedListener(afterTextChangedListener);
         passwordEditText.getEditText().addTextChangedListener(afterTextChangedListener);
         passwordEditText.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
-
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
@@ -133,7 +137,7 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
         });
     }
 
-    private void updateUiWithUser(LoggedInUserView model) {
+    private void updateUiWithUser(AuthUserView model) {
         String welcome = getString(R.string.welcome) + model.getFullName();
         // TODO : initiate successful logged in experience
         if (getContext() != null && getContext().getApplicationContext() != null) {

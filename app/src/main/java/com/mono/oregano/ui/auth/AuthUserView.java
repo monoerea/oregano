@@ -8,7 +8,7 @@ public class AuthUserView {
         this.fullName = fullName;
     }
 
-    String getFullName() {
+    public String getFullName() {
         return fullName;
     }
 }
