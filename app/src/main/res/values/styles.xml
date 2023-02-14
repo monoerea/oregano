@@ -7,10 +7,23 @@
         <item name="colorAccent">@color/white</item>
     </style>
     
-    <style name="navigationTheme">
+    <style name="navigationTheme" parent="AppTheme">
         <!-- Color of text and icon when selected -->
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryDark">@color/purple_700</item>
         <item name="colorAccent">@color/white</item>
+    </style>
+    <style name="AppTheme.cardView" parent="AppTheme">
+        <item name="textAppearanceLabelLarge">@style/TextAppearance.App.Button</item>
+        <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.App.SmallComponent</item>
+    </style>
+    <style name="TextAppearance.App.Button" parent="TextAppearance.Material3.LabelLarge">
+        <item name="fontFamily">@font/muli</item>
+        <item name="android:fontFamily">@font/muli</item>
+    </style>
+
+    <style name="ShapeAppearance.App.SmallComponent" parent="ShapeAppearance.Material3.SmallComponent">
+        <item name="cornerFamily">cut</item>
+        <item name="cornerSize">4dp</item>
     </style>
 </resources>

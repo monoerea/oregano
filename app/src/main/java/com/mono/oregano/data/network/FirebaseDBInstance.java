@@ -13,12 +13,14 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.mono.oregano.data.dataModel.Model;
 import com.mono.oregano.data.dataModel.users.baseUser;
 import com.mono.oregano.data.repository.Result;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Map;
 
 
 public class FirebaseDBInstance implements DataSources {
@@ -40,6 +42,13 @@ public class FirebaseDBInstance implements DataSources {
     public Result<Model> insert(@Nullable String colRef , Model model) {
         try {
             // Attempts signing using the given
+            /**new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    add(colRef,model);
+                }
+            });
+            **/
             add(colRef,model);
             // TODO: handle loggedInUser authentication
             return new Result.Success(model);
@@ -70,11 +79,13 @@ public class FirebaseDBInstance implements DataSources {
         if (reference == null) {
             reference = createCollection(model.getModelName());
         }
-        reference.add(model).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+        reference.document(model.getObjectID()).set(model.getObject(), SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
-            public void onComplete(@NonNull Task<DocumentReference> task) {
+            public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){
                     Log.d("Success","Insert success");
+                }else{
+                    Log.w("Error", "Error writing document");
                 }
             }
         });
@@ -152,12 +163,8 @@ public class FirebaseDBInstance implements DataSources {
         if (reference == null) {
             reference = createCollection(model.getModelName());
         }
-        try {
-            reference.document(model.getObjectID()).update(model.getUpdates());
-            return new Result.Success(model);
-        } catch (IllegalAccessException e) {
-            return new Result.Error(new IOException("Document does not exist", e));
-        }
+        reference.document(model.getObjectID()).update((Map<String, Object>) model.getObject());
+        return new Result.Success(model);
     }
 
     public DataSources getInstance() {

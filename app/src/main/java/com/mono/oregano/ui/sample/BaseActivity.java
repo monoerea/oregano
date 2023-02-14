@@ -1,14 +1,7 @@
 package com.mono.oregano.ui.sample;
 
-import android.app.Activity;
-import android.app.FragmentTransaction;
-import android.os.Bundle;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigator;
-
-import javax.inject.Inject;
 
 public abstract class BaseActivity extends AppCompatActivity {
 /**

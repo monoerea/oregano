@@ -79,7 +79,7 @@ public class RegisterFragment extends BaseFragment<AuthViewModel, FragmentRegist
         final Button signIn = binding.loginNow.getRoot();
         final ProgressBar loadingProgressBar = binding.progressBar.getRoot();
 
-
+        registerButton.setText(R.string.action_sign_up);
         fNameEditText.setHint(R.string.first_name);
         mNameEditText.setHint(R.string.mid_name);
         lNameEditText.setHint(R.string.last_name);

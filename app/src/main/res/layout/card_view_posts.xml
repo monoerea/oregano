@@ -11,42 +11,23 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-        <LinearLayout
-            android:id="@+id/contentPanel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp"
-            android:layout_toRightOf="@+id/buttonPanel">
-
-            <!-- Title, secondary and supporting text -->
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/hello_blank_fragment"
-                android:textAppearance="?attr/textAppearanceHeadline6"
-                />
-            <TextView
-                android:id="@+id/author"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="@string/school_num"
-                android:textAppearance="?attr/textAppearanceBody2"
-                android:textColor="?android:attr/textColorSecondary"
-                />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="@string/para_placeholder"
-                android:textAppearance="?attr/textAppearanceBody2"
-                android:textColor="?android:attr/textColorSecondary"
-                />
-
-        </LinearLayout>
 
         <!-- Buttons -->
+
+        <include
+            android:id="@+id/contentPanel"
+            layout="@layout/card_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_toEndOf="@+id/buttonPanel"
+            android:orientation="vertical"
+            />
+
         <LinearLayout
             android:id="@+id/buttonPanel"
             android:layout_width="40dp"
@@ -68,15 +49,17 @@
                 android:layout_height="wrap_content"
                 android:rotation="180"
                 app:icon="@drawable/like_button_states" />
+
         </LinearLayout>
         <!-- Media -->
         <ImageView
             android:layout_width="match_parent"
+            android:layout_margin="8dp"
             android:layout_height="194dp"
-            app:srcCompat="@drawable/oregano"
-            android:scaleType="centerCrop"
-            android:contentDescription="@string/common_open_on_phone"
             android:layout_below="@+id/contentPanel"
+            android:contentDescription="@string/common_open_on_phone"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/oregano"
             />
 
     </RelativeLayout>

@@ -236,6 +236,11 @@ public class Organization extends Observer implements Model{
         return this.id;
     }
 
+    @Override
+    public Object getObject() {
+        return this;
+    }
+
 
     public HashMap<String, Object> getUpdates() throws IllegalAccessException {
         return getUpdated();

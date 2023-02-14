@@ -1,5 +1,8 @@
 package com.mono.oregano.data.network;
 
+import static androidx.fragment.app.FragmentManager.TAG;
+
+import android.annotation.SuppressLint;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -70,17 +73,18 @@ public class FirebaseAuthInstance implements DataSources {
         });
     }
 
-    public void registerUser(String firstName, String midName, String lastName, String gender, String schoolNo, String email, String password){
+    public void registerUser(String email, String password){
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener((Executor) this, new OnCompleteListener<AuthResult>() {
+            @SuppressLint("RestrictedApi")
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
-                    FirebaseUser user = mAuth.getCurrentUser();
-                    regisUser = new baseUser(user.getUid());
+                    Log.d(TAG, "createUserWithEmail:success");
                     //TODO: create a Document in Firebase FireStore that adds extra info
                 }
             }
         });
+
     }
 
     public Result<LoggedInUser> getLoggedUser(){
@@ -97,13 +101,27 @@ public class FirebaseAuthInstance implements DataSources {
 
     public Result<baseUser> register(String firstName, String midName, String lastName, String gender, String schoolNo, String email, String password) {
         try {
-            registerUser(firstName,midName,lastName,gender,schoolNo,email, password);
+
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+            registerUser(email, password);
+                }
+            });
+            user = mAuth.getCurrentUser();
+            if (user == null){
+                signIn(email,password);
+
+            }
+            String id = user.getUid();
+            regisUser = new baseUser(id, firstName, midName, lastName, gender, schoolNo, email, password);
             return new Result.Success<>(regisUser);
         }
         catch (Exception e){
             return new Result.Error(new IOException("Error registering, User does not exist", e));
         }
     }
+
 
 
     @Override

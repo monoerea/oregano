@@ -1,7 +1,6 @@
 package com.mono.oregano.data.dataModel;
 
 import java.util.HashMap;
-import java.util.HashSet;
 
 public class Posts extends Observer implements Model{
     private String id;
@@ -27,6 +26,11 @@ public class Posts extends Observer implements Model{
     }
 
     @Override
+    public Object getObject() {
+        return this;
+    }
+
+    //@Override
     public HashMap<String, Object> getUpdates() throws IllegalAccessException {
         return getUpdated();
     }

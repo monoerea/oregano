@@ -6,5 +6,6 @@
     tools:context=".ui.profile.ProfileFragment">
 
     <include
+        android:id="@+id/header_text"
         layout="@layout/text_view"/>
 </RelativeLayout>

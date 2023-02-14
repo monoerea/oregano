@@ -16,8 +16,7 @@ import com.mono.oregano.data.repository.user.AuthRepository;
 public class AuthViewModel extends ViewModel {
     protected AuthRepository authRepository;
 
-
-    protected LoggedInUser user;
+    protected baseUser user;
     protected MutableLiveData<AuthFormState> authFormState = new MutableLiveData<>();
 
     protected MutableLiveData<AuthResult> authResult = new MutableLiveData<>();
@@ -68,10 +67,11 @@ public class AuthViewModel extends ViewModel {
         Result<? extends Model> result = authRepository.registerLogin(firstName, midName, lastName, gender, schoolNo,email, password);
 
         if (result instanceof Result.Success) {
-            user = (LoggedInUser) ((Result.Success<baseUser>) result).getData();
+
+            user = ((Result.Success<baseUser>) result).getData();
             authResult.setValue(new AuthResult(new AuthUserView(user.getFullName())));
         } else {
-            authResult.setValue(new AuthResult(R.string.login_failed));
+            authResult.setValue(new AuthResult(R.string.register_failed));
         }
     }
     public void regisDataChanged(String firstName,
@@ -90,6 +90,9 @@ public class AuthViewModel extends ViewModel {
         }
         else if (!isNameValid(lastName)){
             authFormState.setValue(new AuthFormState(null,null,R.string.invalid_name, null, null,null));
+        }
+        else if (!isNameValid(gender)){
+            authFormState.setValue(new AuthFormState(null, null,null,null,null, R.string.invalid_school_num));
         }
         else if (!isSchoolNumValid(schoolNo)){
             authFormState.setValue(new AuthFormState(null, null,null,null,null, R.string.invalid_school_num));

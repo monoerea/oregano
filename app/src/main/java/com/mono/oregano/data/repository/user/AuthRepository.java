@@ -2,6 +2,7 @@ package com.mono.oregano.data.repository.user;
 
 import com.mono.oregano.data.dataModel.Model;
 import com.mono.oregano.data.dataModel.users.LoggedInUser;
+import com.mono.oregano.data.dataModel.users.User;
 import com.mono.oregano.data.dataModel.users.baseUser;
 import com.mono.oregano.data.network.DataSources;
 import com.mono.oregano.data.network.FirebaseAuthInstance;
@@ -46,26 +47,23 @@ public class AuthRepository extends baseRepository {
     }
 
     public Result<? extends Model> registerLogin(String firstName, String midName, String lastName, String gender, String schoolNo,String email, String password){
-        Result<baseUser> user =  regisInstance.register(firstName, midName, lastName, gender, schoolNo, email, password);
+        Result<baseUser> regisResult =  regisInstance.register(firstName, midName, lastName, gender, schoolNo, email, password);
 
-        if (user instanceof Result.Error){
-            return user;
+        if (regisResult instanceof Result.Error){
+            return regisResult;
         }
             //TODO: create a new user document in collection
             //TODO: think about the system structure where to have multiple boilerplate code or not
             // via segmenting for each business object or pass a general model like rn
             //NEED TO TEST ASAP
-        Result<Model> result = dataSource.insert(null,(Model) user);
-        Result<Model> clients = dataSource.insert("Clients",(Model) user);
-
-        if (clients instanceof Result.Error){
-            return result;
-        }
+        baseUser baseUser = ((Result.Success<baseUser>) regisResult).getData();
+        User model = new User(baseUser.getId(),baseUser.getFirstName(),baseUser.getMidName(),baseUser.getLastName(),baseUser.getGender(),baseUser.getSchoolNo(),baseUser.getEmail(),baseUser.getPassword());
+        Result<Model> result = dataSource.insert(null, model);
         if (result instanceof Result.Error){
             return result;
         }
 
-        baseUser toLogUser = (baseUser) ((Result.Success<?>) result).getData();
-        return logIn(toLogUser.getEmail(),toLogUser.getPassword());
+        Result<Model> clients = dataSource.insert("Clients",model);
+        return clients;
     }
 }

@@ -10,21 +10,21 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.mono.oregano.databinding.FragmentNotificationsBinding;
+import com.mono.oregano.databinding.FragmentDiscoverBinding;
 
 public class DiscoverFragment extends Fragment {
 
-    private FragmentNotificationsBinding binding;
+    private FragmentDiscoverBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         DiscoverViewModel notificationsViewModel =
                 new ViewModelProvider(this).get(DiscoverViewModel.class);
 
-        binding = FragmentNotificationsBinding.inflate(inflater, container, false);
+        binding = FragmentDiscoverBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textNotifications;
+        final TextView textView = binding.headerText.getRoot();
         notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }

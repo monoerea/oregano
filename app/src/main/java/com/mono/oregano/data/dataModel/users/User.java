@@ -6,10 +6,11 @@ import com.mono.oregano.data.dataModel.Posts;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-//extends Observer
-public class baseUser  implements Model{
-    //ID
-    private String id;
+/**
+ * Data class for User
+ */
+public class User implements Model {
+    private String uid;
 
     // Basic User Info
     private String firstName;
@@ -27,50 +28,33 @@ public class baseUser  implements Model{
     private ArrayList<String> isFollowing;
     private ArrayList<String> memberOf;
 
-    //Empty constructor
-    baseUser(){}
-    public baseUser(String id, String firstName, String midName, String lastName, String gender, String schoolNo, String email, String password){
-        this.id = id;
+    public User(String id, String firstName, String midName, String lastName, String gender, String schoolNo, String email, String password){
+        this.uid = id;
         this.firstName = firstName;
         this.midName = midName;
         this.lastName = lastName;
-        fullName();
-
+        setFullName();
         this.gender = gender;
         this.schoolNo = schoolNo;
         this.email = email;
         this.password = password;
         //this.hashList = onCreationHashCodes();
     }
-
-    public baseUser(String id){
-        this.id = id;
-    }
-
-    public baseUser(String id, ArrayList<String> memberOf) {
-        this.id = id;
-        this.memberOf = memberOf;
-    }
-
-    public baseUser(String id, String email) {
-        super();
-        this.id = id;
-        this.email = email;
-    }
-
-    void fullName(){
+    void setFullName(){
         this.fullName = this.firstName + " " + this.midName+ " "+ this.lastName;
     }
-    void hashPassword(){
-        //TODO: implements a password hash storing sometime
-    }
-    //GETTERS
-    public String getId() {
-        return id;
+
+    /*
+    * Getters and Setters
+    * */
+
+
+    public String getUid() {
+        return uid;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getFirstName() {
@@ -145,14 +129,6 @@ public class baseUser  implements Model{
         this.posts = posts;
     }
 
-    public ArrayList<String> getMembered() {
-        return memberOf;
-    }
-
-    public void setMembered(ArrayList<String> oIDS) {
-        this.memberOf =  oIDS;
-    }
-
     public ArrayList<String> getIsFollowing() {
         return isFollowing;
     }
@@ -161,11 +137,19 @@ public class baseUser  implements Model{
         this.isFollowing = isFollowing;
     }
 
+    public ArrayList<String> getMemberOf() {
+        return memberOf;
+    }
+
+    public void setMemberOf(ArrayList<String> memberOf) {
+        this.memberOf = memberOf;
+    }
+
     @Override
     public String getModelName() {
         return "Users";
     }
-    
+
     @Override
     public String getObjectName() {
         return this.fullName;
@@ -173,17 +157,11 @@ public class baseUser  implements Model{
 
     @Override
     public String getObjectID() {
-        return this.id;
+        return this.uid;
     }
 
     @Override
     public Object getObject() {
         return this;
     }
-
-    /*
-    @Override
-    public HashMap<String, Object> getUpdates(){
-        return getUpdated();
-    }**/
 }
