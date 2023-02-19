@@ -2,7 +2,7 @@ package com.mono.oregano.data.dataModel.users;
 
 import java.util.ArrayList;
 
-public class Member extends baseUser{
+public class Member extends User {
 
     private int role;
     //store organizations

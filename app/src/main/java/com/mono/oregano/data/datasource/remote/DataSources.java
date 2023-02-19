@@ -1,4 +1,4 @@
-package com.mono.oregano.data.network;
+package com.mono.oregano.data.datasource.remote;
 
 public interface DataSources {
     DataSources getInstance();

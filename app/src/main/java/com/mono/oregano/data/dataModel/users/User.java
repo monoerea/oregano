@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-public class baseUser extends Observer implements Model{
+public class User extends Observer implements Model{
     //ID
     private String id;
 
@@ -28,7 +28,7 @@ public class baseUser extends Observer implements Model{
     private ArrayList<String> isFollowing;
     private ArrayList<String> memberOf;
 
-    private baseUser(String firstName, String midName, String lastName, String gender, String schoolNo, String email, String password, String s){
+    private User(String firstName, String midName, String lastName, String gender, String schoolNo, String email, String password, String s){
         this.firstName = firstName;
         this.midName = midName;
         this.lastName = lastName;
@@ -41,16 +41,16 @@ public class baseUser extends Observer implements Model{
         this.hashList = onCreationHashCodes();
     }
 
-    public baseUser(String id){
+    public User(String id){
         this.id = id;
     }
 
-    public baseUser(String id, ArrayList<String> memberOf) {
+    public User(String id, ArrayList<String> memberOf) {
         this.id = id;
         this.memberOf = memberOf;
     }
 
-    public baseUser(String id, String email) {
+    public User(String id, String email) {
         super();
         this.id = id;
         this.email = email;

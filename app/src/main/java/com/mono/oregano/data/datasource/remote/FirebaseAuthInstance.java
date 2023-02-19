@@ -1,4 +1,4 @@
-package com.mono.oregano.data.network;
+package com.mono.oregano.data.datasource.remote;
 
 import android.util.Log;
 
@@ -10,7 +10,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.mono.oregano.data.dataModel.users.LoggedInUser;
-import com.mono.oregano.data.dataModel.users.baseUser;
+import com.mono.oregano.data.dataModel.users.User;
 import com.mono.oregano.data.repository.Result;
 
 import java.io.IOException;
@@ -22,7 +22,7 @@ public class FirebaseAuthInstance implements DataSources {
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseUser user;
     private LoggedInUser loggedUser;
-    private baseUser regisUser;
+    private User regisUser;
     public Result<LoggedInUser> login(String email, String password) {
 
         try {
@@ -76,7 +76,7 @@ public class FirebaseAuthInstance implements DataSources {
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if (task.isSuccessful()){
                     FirebaseUser user = mAuth.getCurrentUser();
-                    regisUser = new baseUser(user.getUid());
+                    regisUser = new User(user.getUid());
                     //TODO: create a Document in Firebase FireStore that adds extra info
                 }
             }
@@ -95,7 +95,7 @@ public class FirebaseAuthInstance implements DataSources {
         return "Logout Success";
     }
 
-    public Result<baseUser> register(String firstName, String midName, String lastName, String gender, String schoolNo, String email, String password) {
+    public Result<User> register(String firstName, String midName, String lastName, String gender, String schoolNo, String email, String password) {
         try {
             registerUser(firstName,midName,lastName,gender,schoolNo,email, password);
             return new Result.Success<>(regisUser);

@@ -1,4 +1,4 @@
-package com.mono.oregano.data.network;
+package com.mono.oregano.data.datasource.remote;
 
 import android.util.Log;
 
@@ -14,7 +14,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.mono.oregano.data.dataModel.Model;
-import com.mono.oregano.data.dataModel.users.baseUser;
+import com.mono.oregano.data.dataModel.users.User;
 import com.mono.oregano.data.repository.Result;
 
 import java.io.IOException;
@@ -26,7 +26,7 @@ public class FirebaseDBInstance implements DataSources {
     private FirebaseDBInstance instance;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    public Result<baseUser> searchByID(Model model, String id) {
+    public Result<User> searchByID(Model model, String id) {
         try {
             // Attempts signing using the given
             getByID(model, id);

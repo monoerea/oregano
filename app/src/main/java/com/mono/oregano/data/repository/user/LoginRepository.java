@@ -3,9 +3,8 @@ package com.mono.oregano.data.repository.user;
 import android.app.Application;
 
 import com.mono.oregano.data.dataModel.users.LoggedInUser;
-import com.mono.oregano.data.network.FirebaseAuthInstance;
+import com.mono.oregano.data.datasource.remote.FirebaseAuthInstance;
 import com.mono.oregano.data.repository.Result;
-import com.mono.oregano.data.dataModel.users.LoggedInUser;
 
 /**
  * Class that requests authentication and user information from the remote data source and

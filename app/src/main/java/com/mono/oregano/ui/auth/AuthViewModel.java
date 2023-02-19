@@ -9,7 +9,7 @@ import androidx.lifecycle.ViewModel;
 import com.mono.oregano.R;
 import com.mono.oregano.data.dataModel.Model;
 import com.mono.oregano.data.dataModel.users.LoggedInUser;
-import com.mono.oregano.data.dataModel.users.baseUser;
+import com.mono.oregano.data.dataModel.users.User;
 import com.mono.oregano.data.repository.Result;
 import com.mono.oregano.data.repository.user.AuthRepository;
 
@@ -68,7 +68,7 @@ public class AuthViewModel extends ViewModel {
         Result<? extends Model> result = authRepository.registerLogin(firstName, midName, lastName, gender, schoolNo,email, password);
 
         if (result instanceof Result.Success) {
-            user = (LoggedInUser) ((Result.Success<baseUser>) result).getData();
+            user = (LoggedInUser) ((Result.Success<User>) result).getData();
             authResult.setValue(new AuthResult(new AuthUserView(user.getFullName())));
         } else {
             authResult.setValue(new AuthResult(R.string.login_failed));

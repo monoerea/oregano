@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.mono.oregano.data.repository.user.UserRepository;
@@ -43,6 +44,14 @@ public class HomeFragment extends BaseFragment<HomeViewModel, FragmentHomeBindin
     @Override
     protected FragmentHomeBinding getFragmentBinding(LayoutInflater inflater, ViewGroup container) {
         return null;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        TextView text = binding.textHome;
+        text.setText("Welcome");
     }
 
     @Override
