@@ -1,4 +1,4 @@
-package com.mono.oregano.data.network;
+package com.mono.oregano.data.remote;
 
 import android.util.Log;
 
@@ -14,8 +14,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
-import com.mono.oregano.data.dataModel.Model;
-import com.mono.oregano.data.dataModel.users.baseUser;
+import com.mono.oregano.data.model.Model;
+import com.mono.oregano.data.model.users.baseUser;
 import com.mono.oregano.data.repository.Result;
 
 import java.io.IOException;

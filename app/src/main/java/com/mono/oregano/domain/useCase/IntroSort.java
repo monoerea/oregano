@@ -1,7 +1,6 @@
 package com.mono.oregano.domain.useCase;
 
-import com.mono.oregano.data.dataModel.Model;
-import com.mono.oregano.data.dataModel.Organization;
+import com.mono.oregano.data.model.Model;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -204,10 +203,7 @@ public class IntroSort {
     public static void main(String args[]) throws IOException {
 
         ArrayList<Model> myList= new ArrayList<>();
-        myList.add(new Organization("5", "Bother Others String","sample"));
-        myList.add(new Organization("1", "Test Other String","sample"));
-        myList.add(new Organization("2", "Another Other String","sample"));
-        myList.add(new Organization("3", "Another Others String","sample"));
+        //TODO:fill
         int n = myList.size();
 
         IntroSort introsort = new IntroSort(myList);

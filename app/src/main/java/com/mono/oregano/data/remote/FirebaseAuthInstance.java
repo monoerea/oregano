@@ -1,4 +1,4 @@
-package com.mono.oregano.data.network;
+package com.mono.oregano.data.remote;
 
 import static androidx.fragment.app.FragmentManager.TAG;
 
@@ -12,8 +12,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.mono.oregano.data.dataModel.users.LoggedInUser;
-import com.mono.oregano.data.dataModel.users.baseUser;
+import com.mono.oregano.data.model.users.LoggedInUser;
+import com.mono.oregano.data.model.users.baseUser;
 import com.mono.oregano.data.repository.Result;
 
 import java.io.IOException;

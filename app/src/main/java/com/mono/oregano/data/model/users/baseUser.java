@@ -1,12 +1,13 @@
-package com.mono.oregano.data.dataModel.users;
+package com.mono.oregano.data.model.users;
 
-import com.mono.oregano.data.dataModel.Model;
-import com.mono.oregano.data.dataModel.Posts;
+import com.mono.oregano.data.model.Model;
+import com.mono.oregano.data.model.Posts;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 
 //extends Observer
+@Deprecated
 public class baseUser  implements Model{
     //ID
     private String id;

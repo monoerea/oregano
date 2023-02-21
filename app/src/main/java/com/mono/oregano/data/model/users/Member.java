@@ -1,4 +1,4 @@
-package com.mono.oregano.data.dataModel.users;
+package com.mono.oregano.data.model.users;
 
 import java.util.ArrayList;
 

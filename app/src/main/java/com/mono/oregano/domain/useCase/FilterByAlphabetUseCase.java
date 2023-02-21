@@ -1,6 +1,6 @@
 package com.mono.oregano.domain.useCase;
 
-import com.mono.oregano.data.dataModel.Model;
+import com.mono.oregano.data.model.Model;
 
 import java.util.ArrayList;
 

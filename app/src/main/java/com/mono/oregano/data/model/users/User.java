@@ -1,7 +1,7 @@
-package com.mono.oregano.data.dataModel.users;
+package com.mono.oregano.data.model.users;
 
-import com.mono.oregano.data.dataModel.Model;
-import com.mono.oregano.data.dataModel.Posts;
+import com.mono.oregano.data.model.Model;
+import com.mono.oregano.data.model.Posts;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -38,7 +38,6 @@ public class User implements Model {
         this.schoolNo = schoolNo;
         this.email = email;
         this.password = password;
-        //this.hashList = onCreationHashCodes();
     }
     void setFullName(){
         this.fullName = this.firstName + " " + this.midName+ " "+ this.lastName;

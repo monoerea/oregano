@@ -19,7 +19,7 @@ import androidx.viewbinding.ViewBinding;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.mono.oregano.R;
-import com.mono.oregano.data.network.DataSources;
+import com.mono.oregano.data.remote.DataSources;
 import com.mono.oregano.data.repository.baseRepository;
 import com.mono.oregano.databinding.BottomNavBinding;
 import com.mono.oregano.ui.auth.ViewModelFactory;

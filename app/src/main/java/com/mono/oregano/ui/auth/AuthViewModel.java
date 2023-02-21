@@ -7,9 +7,9 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.mono.oregano.R;
-import com.mono.oregano.data.dataModel.Model;
-import com.mono.oregano.data.dataModel.users.LoggedInUser;
-import com.mono.oregano.data.dataModel.users.baseUser;
+import com.mono.oregano.data.model.Model;
+import com.mono.oregano.data.model.users.LoggedInUser;
+import com.mono.oregano.data.model.users.baseUser;
 import com.mono.oregano.data.repository.Result;
 import com.mono.oregano.data.repository.user.AuthRepository;
 

@@ -1,8 +1,8 @@
-package com.mono.oregano.data.dataModel;
+package com.mono.oregano.data.model;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
-
+@Deprecated
 public class Observer {
     protected HashMap<String,Object> hashList;
 

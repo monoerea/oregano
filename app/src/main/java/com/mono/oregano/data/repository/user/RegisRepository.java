@@ -1,8 +1,8 @@
 package com.mono.oregano.data.repository.user;
 
-import com.mono.oregano.data.dataModel.users.LoggedInUser;
-import com.mono.oregano.data.dataModel.users.baseUser;
-import com.mono.oregano.data.network.FirebaseAuthInstance;
+import com.mono.oregano.data.model.users.LoggedInUser;
+import com.mono.oregano.data.model.users.baseUser;
+import com.mono.oregano.data.remote.FirebaseAuthInstance;
 import com.mono.oregano.data.repository.Result;
 
 public class RegisRepository {
