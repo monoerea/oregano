@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/start_screen"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/start_screen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/teal_700"
@@ -21,7 +21,6 @@
             android:layout_centerVertical="true"/>
 
         <include
-
             android:id="@+id/logo_text"
             layout="@layout/text_view"
             android:layout_width="match_parent"
@@ -35,7 +34,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/logo_text"
             android:layout_centerHorizontal="true"
-            android:fontFamily="@font/muli_semibold"
             android:text="@string/start_welcome"
             android:textAlignment="center"
             android:textColor="@color/white" />
@@ -47,7 +45,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/tag_line"
             android:layout_centerHorizontal="true"
-
             android:orientation="horizontal">
 
             <include
@@ -67,8 +64,7 @@
             android:layout_below="@id/linear_button"
             android:text="@string/prompt_redirect"
             android:textColor="@color/white"
-            layout="@layout/transparent_btn"
-            />
+            layout="@layout/transparent_btn" />
 
     </RelativeLayout>
 </ScrollView>

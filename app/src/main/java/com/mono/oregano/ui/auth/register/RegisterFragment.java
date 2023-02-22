@@ -19,6 +19,10 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.google.android.material.datepicker.CalendarConstraints;
+import com.google.android.material.datepicker.DateValidatorPointBackward;
+import com.google.android.material.datepicker.MaterialDatePicker;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.textfield.TextInputLayout;
 import com.mono.oregano.R;
 import com.mono.oregano.data.repository.user.AuthRepository;
@@ -71,7 +75,7 @@ public class RegisterFragment extends BaseFragment<AuthViewModel, FragmentRegist
         final DropDownEditTextBinding sexDropDown = binding.sex;
         final TextInputLayout schoolNumEditText = binding.schoolNum.getRoot();
         final DropDownEditTextBinding collegeDropDown = binding.college;
-        final TextInputLayout birthdateEditText = binding.birthdate.getRoot();
+        final Button birthdateEditText = binding.birthdate.getRoot();
         final TextInputLayout emailEditText = binding.email.getRoot();
         final TextInputLayout passwordEditText = binding.password.getRoot();
         final Button registerButton = binding.register.getRoot();
@@ -83,12 +87,27 @@ public class RegisterFragment extends BaseFragment<AuthViewModel, FragmentRegist
         mNameEditText.setHint(R.string.mid_name);
         lNameEditText.setHint(R.string.last_name);
         collegeDropDown.getRoot().setHint(R.string.college);
-        birthdateEditText.setHint(R.string.birthdate);
+        birthdateEditText.setText(R.string.birthdate);
         sexDropDown.getRoot().setHint(R.string.sex);
         schoolNumEditText.setHint(R.string.school_num);
 
         setSexDropDown(this.getContext(),sexDropDown.autofill);
         setCollegeDropDown(this.getContext(), collegeDropDown.autofill);
+
+        CalendarConstraints.Builder calConstraints = new CalendarConstraints.Builder();
+        calConstraints.setValidator(DateValidatorPointBackward.now());
+
+        MaterialDatePicker.Builder<Long> builder = MaterialDatePicker.Builder.datePicker();
+        builder.setTitleText("Enter Birthdate");
+        builder.setSelection(MaterialDatePicker.todayInUtcMilliseconds());
+        builder.setCalendarConstraints(calConstraints.build());
+
+        MaterialDatePicker<?> datePicker = builder.build();
+        birthdateEditText.setOnClickListener(v -> datePicker.show(requireActivity().getSupportFragmentManager(), "DATE_PICKER"));
+        datePicker.addOnPositiveButtonClickListener(
+                (MaterialPickerOnPositiveButtonClickListener<Object>) selection ->
+                        birthdateEditText.setText("Birthdate: " +datePicker.getHeaderText())
+        );
 
         signIn.setText(R.string.already_have_an_acc);
         signIn.setOnClickListener(v -> uiUtil.navigate(binding.getRoot(), binding.loginNow.getRoot(), R.id.action_registerFragment_to_loginFragment));
@@ -165,7 +184,7 @@ public class RegisterFragment extends BaseFragment<AuthViewModel, FragmentRegist
                         Objects.requireNonNull(sexDropDown.getRoot().getEditText()).getText().toString(),
                         Objects.requireNonNull(schoolNumEditText.getEditText()).getText().toString(),
                         Objects.requireNonNull(collegeDropDown.getRoot().getEditText()).getText().toString(),
-                        Objects.requireNonNull(birthdateEditText.getEditText()).getText().toString(),
+                        Objects.requireNonNull(birthdateEditText).getText().toString(),
                         Objects.requireNonNull(emailEditText.getEditText()).getText().toString(),
                         Objects.requireNonNull(passwordEditText.getEditText()).getText().toString());
             }
@@ -181,7 +200,7 @@ public class RegisterFragment extends BaseFragment<AuthViewModel, FragmentRegist
                         Objects.requireNonNull(sexDropDown.getRoot().getEditText()).getText().toString(),
                         Objects.requireNonNull(schoolNumEditText.getEditText()).getText().toString(),
                         Objects.requireNonNull(collegeDropDown.getRoot().getEditText()).getText().toString(),
-                        Objects.requireNonNull(birthdateEditText.getEditText()).getText().toString(),
+                        Objects.requireNonNull(birthdateEditText).getText().toString(),
                         emailEditText.getEditText().getText().toString(),
                         passwordEditText.getEditText().toString());
             }
@@ -197,7 +216,7 @@ public class RegisterFragment extends BaseFragment<AuthViewModel, FragmentRegist
                     Objects.requireNonNull(sexDropDown.getRoot().getEditText()).getText().toString(),
                     Objects.requireNonNull(schoolNumEditText.getEditText()).getText().toString(),
                     Objects.requireNonNull(collegeDropDown.getRoot().getEditText()).getText().toString(),
-                    Objects.requireNonNull(birthdateEditText.getEditText()).getText().toString(),
+                    Objects.requireNonNull(birthdateEditText).getText().toString(),
                     emailEditText.getEditText().getText().toString(),
                     passwordEditText.getEditText().toString());
         });

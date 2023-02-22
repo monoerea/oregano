@@ -62,7 +62,7 @@
             android:layout_below="@+id/schoolNum" />
         <include
             android:id="@+id/birthdate"
-            layout="@layout/edit_text_design"
+            layout="@layout/button_design_2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/college" />
