@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">oregano</string>
+    <string name="app_name">PUP-OS</string>
     <string name="login_failed">Login failed</string>
     <string name="register_failed">Register failed</string>
     <string name="title_activity_auth">AuthActivity</string>

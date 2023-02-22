@@ -55,6 +55,10 @@ public class AuthViewModel extends ViewModel {
         }
     }
 
+    /**
+     * Removes the user instance and signs out from the FirebaseAuth
+     * @param checked
+     */
     public void signOut(boolean checked) {
         if (checked) {
             return;
@@ -73,7 +77,6 @@ public class AuthViewModel extends ViewModel {
                 schoolNo, college, email, password, birthdate);
 
         if (result instanceof Result.Success) {
-
             user = ((Result.Success<UserModel>) result).getData();
             authResult.setValue(new AuthResult(new AuthUserView(user.getFullName())));
         } else {
