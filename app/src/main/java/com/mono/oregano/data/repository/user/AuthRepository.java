@@ -11,10 +11,10 @@ import com.mono.oregano.data.repository.baseRepository;
     //TODO: never pass in direct objects, just pass the id or object reference to follow the Single source of truth
 public class AuthRepository extends baseRepository {
     private static AuthRepository instance;
-    private FirebaseDBInstance dataSource;
-    private FirebaseAuthInstance authInstance;
-    private LoginRepository loginInstance;
-    private RegisRepository regisInstance;
+    private final FirebaseDBInstance dataSource;
+    private final FirebaseAuthInstance authInstance;
+    private final LoginRepository loginInstance;
+    private final RegisRepository regisInstance;
 
     private AuthRepository() {
         this.dataSource = (FirebaseDBInstance) new FirebaseDBInstance().getInstance();
@@ -41,12 +41,11 @@ public class AuthRepository extends baseRepository {
         loginInstance.logout();
     }
     public Result<LoggedInUser> logIn(String email, String password){
-    Result<LoggedInUser> result = loginInstance.login(email, password);
-    return result;
+        return loginInstance.login(email, password);
     }
 
-    public Result<? extends Model> registerLogin(String firstName, String midName, String lastName, String gender, String schoolNo,String email, String password){
-        Result<User> user =  regisInstance.register(firstName, midName, lastName, gender, schoolNo, email, password);
+    public Result<? extends Model> registerLogin(String firstName, String midName, String lastName, String sex, String schoolNo, String college, String birthdate, String email, String password){
+        Result<User> user =  regisInstance.register(firstName, midName, lastName, sex, schoolNo, college, birthdate, email, password);
 
         if (user instanceof Result.Error){
             return user;

@@ -1,5 +1,6 @@
 package com.mono.oregano.ui.auth;
 
+import android.util.Log;
 import android.util.Patterns;
 
 import androidx.lifecycle.LiveData;
@@ -14,6 +15,7 @@ import com.mono.oregano.data.repository.Result;
 import com.mono.oregano.data.repository.user.AuthRepository;
 
 public class AuthViewModel extends ViewModel {
+    private static final String TAG = "AuthViewModel";
     protected AuthRepository authRepository;
 
 
@@ -46,7 +48,7 @@ public class AuthViewModel extends ViewModel {
         }
     }
     public void signOut(boolean checked){
-        if (checked== true){
+        if (checked){
             return;
         }
         user = null;
@@ -63,9 +65,9 @@ public class AuthViewModel extends ViewModel {
         }
     }
 
-    public void register(String firstName, String midName, String lastName, String gender, String schoolNo,String email, String password) {
+    public void register(String firstName, String midName, String lastName, String sex, String schoolNo, String college, String birthdate, String email, String password) {
         // can be launched in a separate asynchronous job
-        Result<? extends Model> result = authRepository.registerLogin(firstName, midName, lastName, gender, schoolNo,email, password);
+        Result<? extends Model> result = authRepository.registerLogin(firstName, midName, lastName, sex, college, birthdate, schoolNo,email, password);
 
         if (result instanceof Result.Success) {
             user = (LoggedInUser) ((Result.Success<User>) result).getData();
@@ -77,31 +79,42 @@ public class AuthViewModel extends ViewModel {
     public void regisDataChanged(String firstName,
                                  String midName,
                                  String lastName,
-                                 String gender,
+                                 String sex,
                                  String schoolNo,
+                                 String college,
+                                 String birthdate,
                                  String email,
                                  String password) {
 
         if (!isNameValid(firstName)){
             authFormState.setValue(new AuthFormState(R.string.invalid_name, null, null,null,null,null));
         }
-        else if (!isNameValid(midName)){
+        if (!isNameValid(midName)){
             authFormState.setValue(new AuthFormState(null,R.string.invalid_name, null, null,null,null));
         }
-        else if (!isNameValid(lastName)){
+        if (!isNameValid(lastName)){
             authFormState.setValue(new AuthFormState(null,null,R.string.invalid_name, null, null,null));
         }
-        else if (!isSchoolNumValid(schoolNo)){
+        if (!isSchoolNumValid(schoolNo)){
             authFormState.setValue(new AuthFormState(null, null,null,null,null, R.string.invalid_school_num));
         }
-        else if (!isEmailValid(email)) {
+        if (!isEmailValid(email)) {
             authFormState.setValue(new AuthFormState(null,null,null,R.string.invalid_email, null, null));
         }
-        else if (!isPasswordValid(password)) {
+        if (!isPasswordValid(password)) {
             authFormState.setValue(new AuthFormState(null,null,null,null, R.string.invalid_password,null));
         }
-        else {
+        if(
+                isNameValid(firstName) &&
+                isNameValid(midName) &&
+                isNameValid(lastName) &&
+                isSchoolNumValid(schoolNo) &&
+                isEmailValid(email) &&
+                isPasswordValid(password)
+        ) {
             authFormState.setValue(new AuthFormState(true));
+        } else {
+            Log.e(TAG, "MutableLiveData authFormState has not been set. Validations have not been met");
         }
     }
 
