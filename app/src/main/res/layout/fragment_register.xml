@@ -42,7 +42,7 @@
             android:layout_below="@id/midName"
             />
         <include
-            android:id="@+id/gender"
+            android:id="@+id/sex"
             layout="@layout/drop_down_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -53,14 +53,25 @@
             layout="@layout/edit_text_design"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/gender"
-            />
+            android:layout_below="@id/sex"/>
+        <include
+            android:id="@+id/college"
+            layout="@layout/drop_down_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/schoolNum" />
+        <include
+            android:id="@+id/birthdate"
+            layout="@layout/edit_text_design"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/college" />
         <include
             android:id="@+id/email"
             layout="@layout/edit_text_design"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/schoolNum"/>
+            android:layout_below="@id/birthdate"/>
         <include
             android:id="@+id/password"
             layout="@layout/password_edit_text"
@@ -88,8 +99,7 @@
             layout="@layout/button_design"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/redirects">
-        </include>
+            android:layout_below="@id/redirects" />
 
         <include
             android:id="@+id/login_now"
@@ -105,8 +115,6 @@
             app:layout_constraintEnd_toEndOf="@+id/password"
             app:layout_constraintStart_toStartOf="@+id/password"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.3">
-
-        </include>
+            app:layout_constraintVertical_bias="0.3" />
     </RelativeLayout>
 </ScrollView>
