@@ -13,6 +13,11 @@ public class UserModel extends UserEntity implements Model {
                 email, password, dateBirthday, createdAt);
     }
 
+    public UserModel(String id, String email) {
+        setId(id);
+        setEmail(email);
+    }
+
     UserModel fromSnapshot(DocumentSnapshot snapshot){
         return new UserModel(
                 snapshot.getId(),
