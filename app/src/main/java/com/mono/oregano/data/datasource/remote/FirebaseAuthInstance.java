@@ -22,13 +22,12 @@ public class FirebaseAuthInstance implements DataSources {
 
         try {
             // Attempts signing using the given
-            if (mAuth.getCurrentUser()!= null){
+            if (mAuth.getCurrentUser()!= null) {
                 FirebaseUser user = mAuth.getCurrentUser();
                 loggedUser = new LoggedInUser(user.getUid(), user.getEmail());
                 return new Result.Success<>(loggedUser);
-            }else{
+            } else
                 signIn(email, password);
-            }
             return new Result.Success<>(loggedUser);
         } catch (Exception e) {
             return new Result.Error(new IOException("Error logging in, User does not exist", e));
@@ -36,7 +35,6 @@ public class FirebaseAuthInstance implements DataSources {
     }
 
     public Result<String> logOut() {
-
         try {
             // Attempts signing using the given
             // TODO: handle loggedInUser destroy
@@ -55,10 +53,8 @@ public class FirebaseAuthInstance implements DataSources {
                     String email1 = user.getEmail();
                     loggedUser = new LoggedInUser(uid, email1);
                 }
-            }
-            else {
-                Log.e("error", task.getException().getMessage());
-            }
+            } else
+                Log.e(TAG, task.getException().getMessage());
         });
     }
 
@@ -75,8 +71,14 @@ public class FirebaseAuthInstance implements DataSources {
         });
     }
 
-    public Result<LoggedInUser> getLoggedUser(){
+    public Result.Success<LoggedInUser> getLoggedUser(){
         FirebaseUser user = mAuth.getCurrentUser();
+        /**
+         * Null Pointer Handling
+         * user might be null which can cause runtime error
+         * instead of runtime error, returning null to nullable
+         * Uid and Email
+         */
         LoggedInUser logged = new LoggedInUser(
                 user != null ? user.getUid() : null,
                 user != null ? user.getEmail() : null);
@@ -98,7 +100,6 @@ public class FirebaseAuthInstance implements DataSources {
             return new Result.Error(new IOException("Error registering, User does not exist", e));
         }
     }
-
 
     @Override
     public DataSources getInstance() {

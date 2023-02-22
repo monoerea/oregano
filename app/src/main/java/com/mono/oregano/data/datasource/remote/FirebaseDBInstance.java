@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 public class FirebaseDBInstance implements DataSources {
 
+    private static final String TAG = "FirebaseDBInstance";
     private FirebaseDBInstance instance;
     // Added because of error: java.lang.IllegalStateException: Default FirebaseApp is not initialized in this process com.mono.oregano. Make sure to call FirebaseApp.initializeApp(Context) first.
     // FirebaseApp.initializeApp(this);
@@ -67,7 +68,7 @@ public class FirebaseDBInstance implements DataSources {
 
     private void add(@Nullable String colRef, Model model) {
         CollectionReference reference = null;
-        if (colRef == null){
+        if (colRef == null) {
             reference = db.collection(model.getModelName());
         }
         if (reference == null) {
@@ -75,7 +76,7 @@ public class FirebaseDBInstance implements DataSources {
         }
         reference.add(model).addOnCompleteListener(task -> {
             if (task.isSuccessful()){
-                Log.d("Success","Insert success");
+                Log.d(TAG,"Insert success");
             }
         });
     }
