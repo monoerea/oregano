@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/teal_700"
     android:padding="@dimen/activity_horizontal_margin"
-    tools:context=".ui.auth.register.RegisterFragment">
+    tools:context=".presentation.auth.register.RegisterFragment">
     <LinearLayout
         android:id="@+id/text_fields"
         android:layout_width="match_parent"

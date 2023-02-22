@@ -5,8 +5,8 @@ import com.mono.oregano.data.model.users.baseUser;
 import com.mono.oregano.data.remote.DataSources;
 import com.mono.oregano.data.remote.FirebaseAuthInstance;
 import com.mono.oregano.data.remote.FirebaseDBInstance;
-import com.mono.oregano.data.repository.Result;
 import com.mono.oregano.data.repository.baseRepository;
+import com.mono.oregano.domain.util.Result;
 
 public class UserRepository extends baseRepository {
     static UserRepository instance;
@@ -33,7 +33,7 @@ public class UserRepository extends baseRepository {
         }
         logged = ((Result.Success<LoggedInUser>) loggedUser).getData();
 
-        Result<baseUser> result= database.searchByID(logged, logged.getId());
+        Result<baseUser> result= (Result<baseUser>) database.searchByID(logged, logged.getId());
         return result;
     }
 

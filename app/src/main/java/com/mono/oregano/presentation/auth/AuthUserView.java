@@ -1,5 +1,9 @@
-package com.mono.oregano.ui.auth;
+package com.mono.oregano.presentation.auth;
 
+/**
+ * Local class that stores the successful login or register data
+ * For access of the local package.
+ */
 public class AuthUserView {
     protected String fullName;
     //... other data fields that may be accessible to the UI

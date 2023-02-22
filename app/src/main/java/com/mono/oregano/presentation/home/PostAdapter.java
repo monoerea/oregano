@@ -1,4 +1,4 @@
-package com.mono.oregano.ui.home;
+package com.mono.oregano.presentation.home;
 
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -9,11 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.MutableLiveData;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mono.oregano.R;
-import com.mono.oregano.data.model.Model;
 import com.mono.oregano.data.model.Posts;
 
 import java.util.ArrayList;

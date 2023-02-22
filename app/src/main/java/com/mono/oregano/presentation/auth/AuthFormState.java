@@ -1,7 +1,11 @@
-package com.mono.oregano.ui.auth;
+package com.mono.oregano.presentation.auth;
 
 import androidx.annotation.Nullable;
 
+/**
+ * Class that compiles the the given state of the View
+ * Largely observes errors is from the validity check
+ */
 public class AuthFormState {
     @Nullable
     protected Integer emailError;

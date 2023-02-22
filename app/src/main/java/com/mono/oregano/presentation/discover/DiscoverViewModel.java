@@ -1,4 +1,4 @@
-package com.mono.oregano.ui.discover;
+package com.mono.oregano.presentation.discover;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

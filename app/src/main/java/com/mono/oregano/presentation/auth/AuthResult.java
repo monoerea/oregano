@@ -1,4 +1,4 @@
-package com.mono.oregano.ui.auth;
+package com.mono.oregano.presentation.auth;
 
 import androidx.annotation.Nullable;
 

@@ -7,8 +7,8 @@ import com.mono.oregano.data.model.users.baseUser;
 import com.mono.oregano.data.remote.DataSources;
 import com.mono.oregano.data.remote.FirebaseAuthInstance;
 import com.mono.oregano.data.remote.FirebaseDBInstance;
-import com.mono.oregano.data.repository.Result;
 import com.mono.oregano.data.repository.baseRepository;
+import com.mono.oregano.domain.util.Result;
     //TODO: never pass in direct objects, just pass the id or object reference to follow the Single source of truth
 public class AuthRepository extends baseRepository {
     private static AuthRepository instance;

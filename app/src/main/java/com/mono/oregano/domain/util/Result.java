@@ -1,4 +1,4 @@
-package com.mono.oregano.data.repository;
+package com.mono.oregano.domain.util;
 
 public class Result<T> {
     private Result(){

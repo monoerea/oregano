@@ -1,4 +1,4 @@
-package com.mono.oregano.ui;
+package com.mono.oregano.presentation.auth;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,8 +14,7 @@ import com.mono.oregano.R;
 import com.mono.oregano.data.repository.user.AuthRepository;
 import com.mono.oregano.databinding.FragmentStartScreenBinding;
 import com.mono.oregano.domain.util.uiUtil;
-import com.mono.oregano.ui.auth.AuthViewModel;
-import com.mono.oregano.ui.auth.ViewModelFactory;
+import com.mono.oregano.presentation.BaseFragment;
 
 public class StartScreenFragment extends BaseFragment<AuthViewModel, FragmentStartScreenBinding, AuthRepository> {
     private FragmentStartScreenBinding binding;
@@ -57,7 +56,6 @@ public class StartScreenFragment extends BaseFragment<AuthViewModel, FragmentSta
         uiUtil.navigate(binding.getRoot(),registerBtn, R.id.action_startFragment_to_registerFragment);
         uiUtil.navigate(binding.getRoot(),signInBtn, R.id.action_startFragment_to_loginFragment);
     }
-
 
 
 

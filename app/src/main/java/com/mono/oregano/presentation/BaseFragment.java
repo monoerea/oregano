@@ -1,4 +1,4 @@
-package com.mono.oregano.ui;
+package com.mono.oregano.presentation;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -22,7 +22,7 @@ import com.mono.oregano.R;
 import com.mono.oregano.data.remote.DataSources;
 import com.mono.oregano.data.repository.baseRepository;
 import com.mono.oregano.databinding.BottomNavBinding;
-import com.mono.oregano.ui.auth.ViewModelFactory;
+import com.mono.oregano.presentation.auth.ViewModelFactory;
 
 public abstract class BaseFragment<VM extends  ViewModel,VB extends ViewBinding, BR extends baseRepository> extends Fragment {
     protected ViewBinding binding;

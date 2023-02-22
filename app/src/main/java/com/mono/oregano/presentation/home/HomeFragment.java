@@ -1,4 +1,4 @@
-package com.mono.oregano.ui.home;
+package com.mono.oregano.presentation.home;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,7 +11,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.mono.oregano.data.repository.user.UserRepository;
 import com.mono.oregano.databinding.FragmentHomeBinding;
-import com.mono.oregano.ui.BaseFragment;
+import com.mono.oregano.presentation.BaseFragment;
 
 public class HomeFragment extends BaseFragment<HomeViewModel, FragmentHomeBinding, UserRepository> {
 

@@ -1,4 +1,4 @@
-package com.mono.oregano.ui.sample;
+package com.mono.oregano.presentation.sample;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;

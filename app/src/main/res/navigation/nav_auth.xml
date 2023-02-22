@@ -6,12 +6,12 @@
     app:startDestination="@id/startFragment">
     <fragment
         android:id="@+id/nav_host"
-        android:name="com.mono.oregano.ui.auth.AuthActivity"
+        android:name="com.mono.oregano.presentation.auth.AuthActivity"
         android:label="@string/action_sign_in"
         tools:layout="@layout/activity_auth"/>
     <fragment
         android:id="@+id/startFragment"
-        android:name="com.mono.oregano.ui.StartScreenFragment"
+        android:name="com.mono.oregano.presentation.auth.StartScreenFragment"
         android:label="@string/action_sign_in"
         tools:layout="@layout/fragment_start_screen">
         <action
@@ -23,7 +23,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.mono.oregano.ui.auth.login.LoginFragment"
+        android:name="com.mono.oregano.presentation.auth.login.LoginFragment"
         android:label="@string/action_sign_in"
         tools:layout="@layout/fragment_login">
         <action
@@ -32,7 +32,7 @@
     </fragment>
     <fragment
         android:id="@+id/registerFragment"
-        android:name="com.mono.oregano.ui.auth.register.RegisterFragment"
+        android:name="com.mono.oregano.presentation.auth.register.RegisterFragment"
         android:label="@string/action_sign_up"
         tools:layout="@layout/fragment_register">
         <action

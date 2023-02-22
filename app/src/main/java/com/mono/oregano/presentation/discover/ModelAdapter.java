@@ -1,4 +1,4 @@
-package com.mono.oregano.ui.discover;
+package com.mono.oregano.presentation.discover;
 
 import android.net.Uri;
 import android.view.LayoutInflater;
@@ -8,7 +8,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.view.menu.MenuView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mono.oregano.R;

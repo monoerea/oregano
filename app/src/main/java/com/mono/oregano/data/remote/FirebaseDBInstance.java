@@ -15,8 +15,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.mono.oregano.data.model.Model;
-import com.mono.oregano.data.model.users.baseUser;
-import com.mono.oregano.data.repository.Result;
+import com.mono.oregano.domain.util.Result;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,7 +27,7 @@ public class FirebaseDBInstance implements DataSources {
     private FirebaseDBInstance instance;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    public Result<baseUser> searchByID(Model model, String id) {
+    public Result<? extends Model> searchByID(Model model, String id) {
         try {
             // Attempts signing using the given
             getByID(model, id);
@@ -79,7 +78,7 @@ public class FirebaseDBInstance implements DataSources {
         if (reference == null) {
             reference = createCollection(model.getModelName());
         }
-        reference.document(model.getObjectID()).set(model.getObject(), SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
+        reference.document(model.getObjectID()).set(model.toDocument(), SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if (task.isSuccessful()){

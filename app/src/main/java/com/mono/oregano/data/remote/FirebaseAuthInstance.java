@@ -14,7 +14,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.mono.oregano.data.model.users.LoggedInUser;
 import com.mono.oregano.data.model.users.baseUser;
-import com.mono.oregano.data.repository.Result;
+import com.mono.oregano.domain.util.Result;
 
 import java.io.IOException;
 import java.util.concurrent.Executor;

@@ -1,9 +1,8 @@
-package com.mono.oregano.ui.auth.login;
+package com.mono.oregano.presentation.auth.login;
 
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -24,13 +22,14 @@ import com.mono.oregano.R;
 import com.mono.oregano.data.repository.user.AuthRepository;
 import com.mono.oregano.databinding.FragmentLoginBinding;
 import com.mono.oregano.domain.util.uiUtil;
-import com.mono.oregano.ui.BaseFragment;
-import com.mono.oregano.ui.auth.AuthUserView;
-import com.mono.oregano.ui.auth.AuthViewModel;
-import com.mono.oregano.ui.auth.ViewModelFactory;
+import com.mono.oregano.presentation.BaseFragment;
+import com.mono.oregano.presentation.auth.AuthUserView;
+import com.mono.oregano.presentation.auth.AuthViewModel;
+import com.mono.oregano.presentation.auth.ViewModelFactory;
+
+import java.util.Objects;
 
 public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepository> {
-
     private AuthViewModel loginViewModel;
     private FragmentLoginBinding binding;
 
@@ -55,47 +54,50 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
     protected FragmentLoginBinding getFragmentBinding(LayoutInflater inflater, ViewGroup container) {
         return FragmentLoginBinding.inflate(inflater, container, false);
     }
+
+    //Overridden method from Fragments
+    //Sets the properties of the view on created
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         loginViewModel = new ViewModelProvider(this, new ViewModelFactory(AuthRepository.getInstance()))
                 .get(AuthViewModel.class);
 
-        final TextInputLayout emailRoot = binding.email.getRoot();
-        final TextInputLayout passwordEditText = binding.password.getRoot();
-        final Button loginButton = binding.login.getRoot();
+        final TextInputLayout editTextEmail = binding.email.getRoot();
+        final TextInputLayout editTextPassword = binding.password.getRoot();
+        final Button btnLogin = binding.login.getRoot();
         final ProgressBar loadingProgressBar = binding.progressBar.getRoot();
-        final Button signUp = binding.createAccount.getRoot();
+        final Button btnRedirect = binding.createAccount.getRoot();
 
         binding.headerTitle.getRoot().setText(R.string.action_sign_in);
-        signUp.setText(R.string.prompt_redirect);
+        btnRedirect.setText(R.string.prompt_redirect);
 
-        signUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                uiUtil.navigate(binding.getRoot(), binding.createAccount.getRoot(), R.id.action_loginFragment_to_registerFragment);
-            }
-        });
+        //Navigation to redirect to register fragment
+        btnRedirect.setOnClickListener(v -> uiUtil.navigate(binding.getRoot(), binding.createAccount.getRoot(), R.id.action_loginFragment_to_registerFragment));
 
+        //Observes the state emitted from the view model class
+        //and changes the component attributes based on the state
         loginViewModel.getAuthState().observe(getViewLifecycleOwner(), loginFormState -> {
             if (loginFormState == null) {
                 return;
             }
-            loginButton.setEnabled(loginFormState.isDataValid());
+            btnLogin.setEnabled(loginFormState.isDataValid());
 
             if (loginFormState.getPasswordError() != null) {
-                passwordEditText.setError(getString(loginFormState.getPasswordError()));
+                editTextPassword.setError(getString(loginFormState.getPasswordError()));
             }else{
-                passwordEditText.setError(null);
+                editTextPassword.setError(null);
             }
             if (loginFormState.getEmailError() != null) {
-                emailRoot.setError(getString(loginFormState.getEmailError()));
+                editTextEmail.setError(getString(loginFormState.getEmailError()));
             }else{
-                emailRoot.setError(null);
+                editTextEmail.setError(null);
             }
 
         });
 
+        //Observe the emitted Auth result form the ViewModel livedata
+        //Updates the UI to inform if login was a success or fail
         loginViewModel.getAuthResult().observe(getViewLifecycleOwner(), loginResult -> {
             if (loginResult == null) {
                 return;
@@ -108,7 +110,7 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
                 updateUiWithUser(loginResult.getSuccess());
             }
         });
-
+        //Variable used to observe the changes to the input for each character entered
         TextWatcher afterTextChangedListener = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -122,35 +124,30 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
 
             @Override
             public void afterTextChanged(Editable s) {
-                loginViewModel.loginDataChanged(emailRoot.getEditText().getText().toString(),
-                        passwordEditText.getEditText().toString());
+                loginViewModel.loginDataChanged(Objects.requireNonNull(editTextEmail.getEditText()).getText().toString(),
+                        Objects.requireNonNull(editTextPassword.getEditText()).toString());
             }
         };
-        emailRoot.getEditText().addTextChangedListener(afterTextChangedListener);
-        passwordEditText.getEditText().addTextChangedListener(afterTextChangedListener);
-        passwordEditText.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    loginViewModel.login(emailRoot.getEditText().getText().toString(),
-                            passwordEditText.getEditText().getText().toString());
-                }
-                return false;
+        Objects.requireNonNull(editTextEmail.getEditText()).addTextChangedListener(afterTextChangedListener);
+        Objects.requireNonNull(editTextPassword.getEditText()).addTextChangedListener(afterTextChangedListener);
+        editTextPassword.getEditText().setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                loginViewModel.login(editTextEmail.getEditText().getText().toString(),
+                        editTextPassword.getEditText().getText().toString());
             }
+            return false;
         });
-
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadingProgressBar.setVisibility(View.VISIBLE);
-                loginViewModel.login(emailRoot.getEditText().getText().toString(),
-                        passwordEditText.getEditText().getText().toString());
-            }
+        //Sends the current accepted data from view to string to login
+        btnLogin.setOnClickListener(v -> {
+            loadingProgressBar.setVisibility(View.VISIBLE);
+            loginViewModel.login(editTextEmail.getEditText().getText().toString(),
+                    editTextPassword.getEditText().getText().toString());
         });
 
 
     }
-
+    //Method that sets the success message for the view and navigates to
+    // a new view
     private void updateUiWithUser(AuthUserView model) {
         String welcome = getString(R.string.welcome) + model.getFullName();
         // TODO : initiate successful logged in experience
@@ -159,7 +156,8 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
         }
 
     }
-
+    //Method that sets the fail message for the view
+    // and displays the context
     private void showLoginFailed(@StringRes Integer errorString) {
         if (getContext() != null && getContext().getApplicationContext() != null) {
             Toast.makeText(
@@ -170,6 +168,8 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
     }
 
 @Override
+    //Describes what to do the View upon destroy
+    // Logs out the user if the button is not checked
     public void onDestroyView() {
         final CheckBox checkBox = binding.checkbox.getRoot();
         loginViewModel.signOut(checkBox.isChecked());

@@ -4,7 +4,7 @@ import android.app.Application;
 
 import com.mono.oregano.data.model.users.LoggedInUser;
 import com.mono.oregano.data.remote.FirebaseAuthInstance;
-import com.mono.oregano.data.repository.Result;
+import com.mono.oregano.domain.util.Result;
 
 /**
  * Class that requests authentication and user information from the remote data source and
@@ -46,10 +46,9 @@ class LoginRepository {
 
     private void setLoggedInUser(LoggedInUser user) {
         this.user = user;
-        // If user credentials will be cached in local storage, it is recommended it be encrypted
-        // @see https://developer.android.com/training/articles/keystore
     }
-
+    //calls the database function to login firebase
+    //returns a result of success or failure using the Result class
     public Result<LoggedInUser> login(String email, String password) {
         // handle login
         Result<LoggedInUser> result = dataSource.login(email, password);

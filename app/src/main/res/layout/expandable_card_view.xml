@@ -56,11 +56,13 @@
             android:id="@+id/profile_picture"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_marginStart="48dp"
+            android:layout_marginTop="1dp"
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
             android:src="@mipmap/ic_launcher"
-            tools:layout_editor_absoluteX="48dp"
-            tools:layout_editor_absoluteY="1dp" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/likeButton"
@@ -70,6 +72,7 @@
             app:icon="@drawable/like_button_states"
             app:iconGravity="textStart"
             app:layout_constraintBottom_toTopOf="@+id/dislikeButton"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.button.MaterialButton
@@ -81,19 +84,23 @@
             app:icon="@drawable/like_button_states"
             app:iconGravity="textStart"
             app:layout_constraintBottom_toBottomOf="@+id/author_name"
+            app:layout_constraintStart_toStartOf="@+id/likeButton"
             app:layout_constraintTop_toBottomOf="@+id/likeButton" />
 
         <com.google.android.material.divider.MaterialDivider
             android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintBottom_toBottomOf="@+id/para" />
+
         <ImageView
             android:id="@+id/postImage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="divider"
-            />
+            android:contentDescription="TODO"
+            android:src="@drawable/ic_launcher_foreground"
+            app:layout_constraintTop_toBottomOf="@+id/divider"
+            tools:layout_editor_absoluteX="-2dp" />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline4"

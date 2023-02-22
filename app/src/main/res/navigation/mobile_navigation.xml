@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.mono.oregano.ui.home.HomeFragment"
+        android:name="com.mono.oregano.presentation.home.HomeFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/navigation_discover"
-        android:name="com.mono.oregano.ui.discover.DiscoverFragment"
+        android:name="com.mono.oregano.presentation.discover.DiscoverFragment"
         android:label="@string/action_sign_up"
         tools:layout="@layout/fragment_discover"/>
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.mono.oregano.ui.profile.ProfileFragment"
+        android:name="com.mono.oregano.presentation.profile.ProfileFragment"
         android:label="@string/action_sign_in"
         tools:layout="@layout/fragment_profile"/>
 </navigation>

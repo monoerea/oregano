@@ -3,7 +3,7 @@ package com.mono.oregano.data.repository.user;
 import com.mono.oregano.data.model.users.LoggedInUser;
 import com.mono.oregano.data.model.users.baseUser;
 import com.mono.oregano.data.remote.FirebaseAuthInstance;
-import com.mono.oregano.data.repository.Result;
+import com.mono.oregano.domain.util.Result;
 
 public class RegisRepository {
     private static volatile RegisRepository instance;

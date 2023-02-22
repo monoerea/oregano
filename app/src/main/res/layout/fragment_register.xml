@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/teal_700"
     android:padding="@dimen/activity_horizontal_margin"
-    tools:context=".ui.auth.register.RegisterFragment">
+    tools:context=".presentation.auth.register.RegisterFragment">
     <RelativeLayout
         android:id="@+id/text_fields"
         android:layout_width="match_parent"
@@ -56,11 +56,18 @@
             android:layout_below="@id/gender"
             />
         <include
+            android:id="@+id/college"
+            layout="@layout/drop_down_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/schoolNum"
+            />
+        <include
             android:id="@+id/email"
             layout="@layout/edit_text_design"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/schoolNum"/>
+            android:layout_below="@id/college"/>
         <include
             android:id="@+id/password"
             layout="@layout/password_edit_text"

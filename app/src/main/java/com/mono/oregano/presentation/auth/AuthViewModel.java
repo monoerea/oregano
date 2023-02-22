@@ -1,4 +1,4 @@
-package com.mono.oregano.ui.auth;
+package com.mono.oregano.presentation.auth;
 
 import android.util.Patterns;
 
@@ -10,9 +10,16 @@ import com.mono.oregano.R;
 import com.mono.oregano.data.model.Model;
 import com.mono.oregano.data.model.users.LoggedInUser;
 import com.mono.oregano.data.model.users.baseUser;
-import com.mono.oregano.data.repository.Result;
 import com.mono.oregano.data.repository.user.AuthRepository;
+import com.mono.oregano.domain.util.Result;
 
+/**
+ * Shared view-model class
+ * Class that contains the logic for non view related functions
+ * such as login, register and validity checks
+ * Emits values for observing
+ * Follows the singleton and observer pattern
+ */
 public class AuthViewModel extends ViewModel {
     protected AuthRepository authRepository;
 
@@ -51,17 +58,6 @@ public class AuthViewModel extends ViewModel {
         user = null;
         authRepository.signOut();
     }
-    public void loginDataChanged(String email, String password) {
-
-        if (!isEmailValid(email)) {
-            authFormState.setValue(new AuthFormState(R.string.invalid_email, null));
-        } else if (!isPasswordValid(password)) {
-            authFormState.setValue(new AuthFormState(null, R.string.invalid_password));
-        } else {
-            authFormState.setValue(new AuthFormState(true));
-        }
-    }
-
     public void register(String firstName, String midName, String lastName, String gender, String schoolNo,String email, String password) {
         // can be launched in a separate asynchronous job
         Result<? extends Model> result = authRepository.registerLogin(firstName, midName, lastName, gender, schoolNo,email, password);
@@ -74,6 +70,19 @@ public class AuthViewModel extends ViewModel {
             authResult.setValue(new AuthResult(R.string.register_failed));
         }
     }
+
+    //Emits the observable live data for the view to observe
+    public void loginDataChanged(String email, String password) {
+
+        if (!isEmailValid(email)) {
+            authFormState.setValue(new AuthFormState(R.string.invalid_email, null));
+        } else if (!isPasswordValid(password)) {
+            authFormState.setValue(new AuthFormState(null, R.string.invalid_password));
+        } else {
+            authFormState.setValue(new AuthFormState(true));
+        }
+    }
+    // Similar to above but for Register fragment
     public void regisDataChanged(String firstName,
                                  String midName,
                                  String lastName,
@@ -83,25 +92,32 @@ public class AuthViewModel extends ViewModel {
                                  String password) {
 
         if (!isNameValid(firstName)){
-            authFormState.setValue(new AuthFormState(R.string.invalid_name, null, null,null,null,null));
+            authFormState.setValue(new AuthFormState(R.string.invalid_name, null,
+                    null,null,null,null));
         }
         else if (!isNameValid(midName)){
-            authFormState.setValue(new AuthFormState(null,R.string.invalid_name, null, null,null,null));
+            authFormState.setValue(new AuthFormState(null,R.string.invalid_name,
+                    null, null,null,null));
         }
         else if (!isNameValid(lastName)){
-            authFormState.setValue(new AuthFormState(null,null,R.string.invalid_name, null, null,null));
+            authFormState.setValue(new AuthFormState(null,null,
+                    R.string.invalid_name, null, null,null));
         }
         else if (!isNameValid(gender)){
-            authFormState.setValue(new AuthFormState(null, null,null,null,null, R.string.invalid_school_num));
+            authFormState.setValue(new AuthFormState(null, null,
+                    null,null,null, R.string.invalid_school_num));
         }
         else if (!isSchoolNumValid(schoolNo)){
-            authFormState.setValue(new AuthFormState(null, null,null,null,null, R.string.invalid_school_num));
+            authFormState.setValue(new AuthFormState(null, null,
+                    null,null,null, R.string.invalid_school_num));
         }
         else if (!isEmailValid(email)) {
-            authFormState.setValue(new AuthFormState(null,null,null,R.string.invalid_email, null, null));
+            authFormState.setValue(new AuthFormState(null,null,
+                    null,R.string.invalid_email, null, null));
         }
         else if (!isPasswordValid(password)) {
-            authFormState.setValue(new AuthFormState(null,null,null,null, R.string.invalid_password,null));
+            authFormState.setValue(new AuthFormState(null,null,
+                    null,null, R.string.invalid_password,null));
         }
         else {
             authFormState.setValue(new AuthFormState(true));
