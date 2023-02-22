@@ -31,7 +31,6 @@ import com.mono.oregano.presentation.auth.AuthUserView;
 import com.mono.oregano.presentation.auth.AuthViewModel;
 import com.mono.oregano.presentation.auth.ViewModelFactory;
 
-import java.sql.Date;
 import java.util.Objects;
 
 public class RegisterFragment extends BaseFragment<AuthViewModel, FragmentRegisterBinding, AuthRepository> {
@@ -159,8 +158,8 @@ public class RegisterFragment extends BaseFragment<AuthViewModel, FragmentRegist
                         Objects.requireNonNull(schoolNumEditText.getEditText()).getText().toString(),
                         Objects.requireNonNull(dropCollege.getRoot().getEditText()).getText().toString(),
                         Objects.requireNonNull(emailEditText.getEditText()).getText().toString(),
-                        Objects.requireNonNull(passwordEditText.getEditText()).getText().toString(),
-                        Date.valueOf(Objects.requireNonNull(pkrBirthday.getEditText()).toString())
+                        Objects.requireNonNull(passwordEditText.getEditText()).getText().toString()
+                        //Date.valueOf(Objects.requireNonNull(pkrBirthday.getEditText()).toString())
                 );
             }
         };
@@ -176,7 +175,7 @@ public class RegisterFragment extends BaseFragment<AuthViewModel, FragmentRegist
                         Objects.requireNonNull(schoolNumEditText.getEditText()).getText().toString(),
                         emailEditText.getEditText().getText().toString(),
                         passwordEditText.getEditText().toString(),
-                        Objects.requireNonNull(Date.valueOf(Objects.requireNonNull(pkrBirthday.getEditText()).toString()))
+                        Objects.requireNonNull(pkrBirthday.getEditText()).toString()
                         );
             }
             return false;
@@ -192,8 +191,8 @@ public class RegisterFragment extends BaseFragment<AuthViewModel, FragmentRegist
                     Objects.requireNonNull(dropCollege.getRoot().getEditText()).getText().toString(),
                     emailEditText.getEditText().getText().toString(),
                     passwordEditText.getEditText().toString(),
-                    Objects.requireNonNull(Date.valueOf(Objects.requireNonNull(pkrBirthday.getEditText()).toString()))
-                    );
+                    Objects.requireNonNull(pkrBirthday.getEditText()).toString());
+
         });
     }
     //Sets up the initial values in the view

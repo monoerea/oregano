@@ -3,15 +3,11 @@ package com.mono.oregano.data.repository.user;
 import com.mono.oregano.data.model.Model;
 import com.mono.oregano.data.model.UserModel;
 import com.mono.oregano.data.model.users.LoggedInUser;
-import com.mono.oregano.data.model.users.User;
-import com.mono.oregano.data.model.users.baseUser;
 import com.mono.oregano.data.remote.DataSources;
 import com.mono.oregano.data.remote.FirebaseAuthInstance;
 import com.mono.oregano.data.remote.FirebaseDBInstance;
 import com.mono.oregano.data.repository.baseRepository;
 import com.mono.oregano.domain.util.Result;
-
-import java.util.Date;
 
 //TODO: never pass in direct objects, just pass the id or object reference to follow the Single source of truth
 public class AuthRepository extends baseRepository {
@@ -52,7 +48,7 @@ public class AuthRepository extends baseRepository {
 
     public Result<? extends Model> registerLogin(String firstName, String midName, String lastName,
                                                  String sex, String schoolNo,String college,
-                                                 String email, String password, Date birthday){
+                                                 String email, String password, String birthday){
         Result<UserModel> regisResult =  regisInstance.register(firstName, midName, lastName,
                 sex, schoolNo,college, email, password,birthday);
 
@@ -63,8 +59,8 @@ public class AuthRepository extends baseRepository {
             //TODO: think about the system structure where to have multiple boilerplate code or not
             // via segmenting for each business object or pass a general model like rn
             //NEED TO TEST ASAP
-        baseUser baseUser = ((Result.Success<baseUser>) regisResult).getData();
-        User model = new User(baseUser.getId(),baseUser.getFirstName(),baseUser.getMidName(),baseUser.getLastName(),baseUser.getGender(),baseUser.getSchoolNo(),baseUser.getEmail(),baseUser.getPassword());
+        UserModel user = ((Result.Success<UserModel>) regisResult).getData();
+        UserModel model = new UserModel(user.getId(),user.getFirstName(),user.getMidName(),user.getLastName(),user.getSex(),user.getSchoolNo(),user.getCollege(),user.getEmail(),user.getPassword(), user.getBirthday(), user.getCreatedAt());
         Result<Model> result = dataSource.insert(null, model);
         if (result instanceof Result.Error){
             return result;

@@ -65,9 +65,10 @@ public class AuthViewModel extends ViewModel {
 
     public void register(String firstName, String midName, String lastName,
                          String sex, String schoolNo, String college, String email,
-                         String password, Date birthdate) {
+                         String password, String birthdate) {
         // can be launched in a separate asynchronous job
-        Result<? extends Model> result = authRepository.registerLogin(firstName, midName, lastName, sex, schoolNo, college, email, password, birthdate);
+        Result<? extends Model> result = authRepository.registerLogin(firstName, midName, lastName, sex,
+                schoolNo, college, email, password, birthdate);
 
         if (result instanceof Result.Success) {
 
@@ -98,8 +99,9 @@ public class AuthViewModel extends ViewModel {
                                  String schoolNo,
                                  String college,
                                  String email,
-                                 String password,
-                                 Date birthdate) {
+                                 String password
+                                 //Date birthdate
+    ) {
 
         if (!isNameValid(firstName)) {
             authFormState.setValue(new AuthFormState(R.string.invalid_name, null,
@@ -126,10 +128,12 @@ public class AuthViewModel extends ViewModel {
             authFormState.setValue(new AuthFormState(null, null,
                     null, null, R.string.invalid_password, null));
         }
+        /*
         if (isDateValid(birthdate)) {
             authFormState.setValue(new AuthFormState(null, null,
                     null, null, R.string.invalid_password, null));
-        } else {
+
+        }*/ else {
             authFormState.setValue(new AuthFormState(true));
         }
     }

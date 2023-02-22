@@ -2,17 +2,19 @@ package com.mono.oregano.data.repository.user;
 
 import com.mono.oregano.data.model.UserModel;
 import com.mono.oregano.data.model.users.LoggedInUser;
-import com.mono.oregano.data.model.users.baseUser;
 import com.mono.oregano.data.remote.FirebaseAuthInstance;
 import com.mono.oregano.domain.util.Result;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class RegisRepository {
     private static volatile RegisRepository instance;
     private FirebaseAuthInstance dataSource;
 
-    private baseUser user = null;
+    private UserModel user = null;
 
     private RegisRepository(FirebaseAuthInstance dataSource){this.dataSource = dataSource;}
 
@@ -27,18 +29,30 @@ public class RegisRepository {
         return user != null;
     }
 
-    private void setRegisUser(baseUser user){
+    private void setRegisUser(UserModel user){
         this.user = user;
     }
 
     public Result<UserModel> register(String firstName, String midName, String lastName,
                                       String sex, String schoolNo,String college,
-                                      String email, String password, Date birthday){
-        Result<UserModel> result= (Result<UserModel>) dataSource.register(firstName, midName, lastName, sex,
-                schoolNo, college, email, password, birthday);
+                                      String email, String password, String birthday){
+
+        Result<UserModel> result= null;
+        try {
+            result = (Result<UserModel>) dataSource.register(firstName, midName, lastName, sex,
+                    schoolNo, college, email, password, parseDate(birthday));
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
         if (result instanceof Result.Success) {
             setRegisUser(((Result.Success<LoggedInUser>) result).getData());
         }
         return result;
+    }
+
+    private Date parseDate(String date) throws ParseException {
+        DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        Date parsed = formatter.parse(date);
+        return  parsed;
     }
 }

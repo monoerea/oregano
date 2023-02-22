@@ -2,17 +2,13 @@ package com.mono.oregano.data.remote;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 import com.mono.oregano.data.model.Model;
 import com.mono.oregano.domain.util.Result;
@@ -24,8 +20,8 @@ import java.util.Map;
 
 public class FirebaseDBInstance implements DataSources {
 
-    private FirebaseDBInstance instance;
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private static FirebaseDBInstance instance;
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public Result<? extends Model> searchByID(Model model, String id) {
         try {
@@ -66,8 +62,7 @@ public class FirebaseDBInstance implements DataSources {
 
 
     public CollectionReference createCollection(String colName) {
-        CollectionReference reference = db.collection(colName).getParent().collection(colName);
-        return reference;
+        return db.collection(colName).getParent().collection(colName);
     }
 
     private void add(@Nullable String colRef, Model model) {
@@ -78,14 +73,11 @@ public class FirebaseDBInstance implements DataSources {
         if (reference == null) {
             reference = createCollection(model.getModelName());
         }
-        reference.document(model.getObjectID()).set(model.toDocument(), SetOptions.merge()).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()){
-                    Log.d("Success","Insert success");
-                }else{
-                    Log.w("Error", "Error writing document");
-                }
+        reference.document(model.getObjectID()).set(model.toDocument(), SetOptions.merge()).addOnCompleteListener(task -> {
+            if (task.isSuccessful()){
+                Log.d("Success","Insert success");
+            }else{
+                Log.w("Error", "Error writing document");
             }
         });
     }
@@ -94,28 +86,28 @@ public class FirebaseDBInstance implements DataSources {
     private Result<Model> getByID(Model model, String id) {
         //Returns one queried data
         CollectionReference reference = db.collection(model.getModelName());
+        ArrayList<Model> result = new ArrayList<>();
+        DocumentReference documentReference;
         if (reference == null) {
             reference = createCollection(model.getModelName());
         }
-        ArrayList<Model> result = new ArrayList<>();
-        DocumentReference documentReference;
         try {
             documentReference = reference.document(id);
         } catch (Exception e) {
             return new Result.Error(new IOException("Error getting documents.", e));
         }
-        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        result.add(document.toObject(Model.class));
-                    }
+        documentReference.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    result.add(document.toObject(Model.class));
                 }
             }
         });
-        return new Result.Success<>(result.get(0));
+        if (result!=null){
+            return new Result.Success<>(result.get(0));
+        }
+        return new Result.Error(new IOException("Error getting documents."));
     }
 
     private Result<ArrayList<Model>> queryByName(Model model, String name) {
@@ -127,13 +119,10 @@ public class FirebaseDBInstance implements DataSources {
         try {
             reference = db.collection(model.getModelName());
             reference.whereEqualTo("Name", name).limit(100).get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    queryData.add(document.toObject(Model.class));
-                                }
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                queryData.add(document.toObject(Model.class));
                             }
                         }
                     });
