@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -24,7 +25,9 @@ import java.util.ArrayList;
 public class FirebaseDBInstance implements DataSources {
 
     private FirebaseDBInstance instance;
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    // Added because of error: java.lang.IllegalStateException: Default FirebaseApp is not initialized in this process com.mono.oregano. Make sure to call FirebaseApp.initializeApp(Context) first.
+    // FirebaseApp.initializeApp(this);
+    private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     public Result<User> searchByID(Model model, String id) {
         try {
@@ -70,12 +73,9 @@ public class FirebaseDBInstance implements DataSources {
         if (reference == null) {
             reference = createCollection(model.getModelName());
         }
-        reference.add(model).addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentReference> task) {
-                if (task.isSuccessful()){
-                    Log.d("Success","Insert success");
-                }
+        reference.add(model).addOnCompleteListener(task -> {
+            if (task.isSuccessful()){
+                Log.d("Success","Insert success");
             }
         });
     }
@@ -94,14 +94,11 @@ public class FirebaseDBInstance implements DataSources {
         } catch (Exception e) {
             return new Result.Error(new IOException("Error getting documents.", e));
         }
-        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        result.add(document.toObject(Model.class));
-                    }
+        documentReference.get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    result.add(document.toObject(Model.class));
                 }
             }
         });
@@ -111,9 +108,7 @@ public class FirebaseDBInstance implements DataSources {
     private Result<ArrayList<Model>> queryByName(Model model, String name) {
         CollectionReference reference;
         ArrayList<Model> queryData = new ArrayList<>();
-        if (db.collection(model.getModelName()) == null) {
-            createCollection(model.getModelName());
-        }
+        db.collection(model.getModelName());
         try {
             reference = db.collection(model.getModelName());
             reference.whereEqualTo("Name", name).limit(100).get()

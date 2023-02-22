@@ -2,11 +2,6 @@ package com.mono.oregano.data.datasource.remote;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.mono.oregano.data.dataModel.users.LoggedInUser;
@@ -18,9 +13,9 @@ import java.util.concurrent.Executor;
 
 public class FirebaseAuthInstance implements DataSources {
 
+    private static final String TAG = "FirebaseAuthInstance";
     private FirebaseAuthInstance instance;
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    private FirebaseUser user;
+    private final FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private LoggedInUser loggedUser;
     private User regisUser;
     public Result<LoggedInUser> login(String email, String password) {
@@ -28,7 +23,7 @@ public class FirebaseAuthInstance implements DataSources {
         try {
             // Attempts signing using the given
             if (mAuth.getCurrentUser()!= null){
-                user = mAuth.getCurrentUser();
+                FirebaseUser user = mAuth.getCurrentUser();
                 loggedUser = new LoggedInUser(user.getUid(), user.getEmail());
                 return new Result.Success<>(loggedUser);
             }else{
@@ -51,41 +46,40 @@ public class FirebaseAuthInstance implements DataSources {
         }
     }
     public void signIn(String email,String password){
-        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener((Executor) this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    // Sign in success, update UI with the signed-in user's information
-                    FirebaseUser user = mAuth.getCurrentUser();
-                    if (user!= null){
-                        String uid = user.getUid();
-                        String email = user.getEmail();
-                        loggedUser = new LoggedInUser(uid, email);
-                    }
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener((Executor) this, task -> {
+            if (task.isSuccessful()) {
+                // Sign in success, update UI with the signed-in user's information
+                FirebaseUser user = mAuth.getCurrentUser();
+                if (user!= null){
+                    String uid = user.getUid();
+                    String email1 = user.getEmail();
+                    loggedUser = new LoggedInUser(uid, email1);
                 }
-                else {
-                    Log.e("error", task.getException().getMessage());
-                }
+            }
+            else {
+                Log.e("error", task.getException().getMessage());
             }
         });
     }
 
-    public void registerUser(String firstName, String midName, String lastName, String gender, String schoolNo, String email, String password){
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener((Executor) this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()){
-                    FirebaseUser user = mAuth.getCurrentUser();
+    public void registerUser(String firstName, String midName, String lastName, String sex, String college, String birthdate, String schoolNo, String email, String password){
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener((Executor) this, task -> {
+            if (task.isSuccessful()){
+                FirebaseUser user = mAuth.getCurrentUser();
+                if (user != null)
                     regisUser = new User(user.getUid());
-                    //TODO: create a Document in Firebase FireStore that adds extra info
-                }
+                else
+                    Log.e(TAG, "mAuth has returned null");
+                //TODO: create a Document in Firebase FireStore that adds extra info
             }
         });
     }
 
     public Result<LoggedInUser> getLoggedUser(){
         FirebaseUser user = mAuth.getCurrentUser();
-        LoggedInUser logged = new LoggedInUser(user.getUid(),user.getEmail());
+        LoggedInUser logged = new LoggedInUser(
+                user != null ? user.getUid() : null,
+                user != null ? user.getEmail() : null);
         return new Result.Success<>(logged);
     }
 
@@ -95,9 +89,9 @@ public class FirebaseAuthInstance implements DataSources {
         return "Logout Success";
     }
 
-    public Result<User> register(String firstName, String midName, String lastName, String gender, String schoolNo, String email, String password) {
+    public Result<User> register(String firstName, String midName, String lastName, String sex, String schoolNo, String college, String birthdate, String email, String password) {
         try {
-            registerUser(firstName,midName,lastName,gender,schoolNo,email, password);
+            registerUser(firstName,midName,lastName,sex,schoolNo,college,birthdate,email, password);
             return new Result.Success<>(regisUser);
         }
         catch (Exception e){
