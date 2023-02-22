@@ -43,9 +43,9 @@ public class AuthViewModel extends ViewModel {
         return authResult;
     }
 
-    public void login(String email, String password) {
+    public void login(String strEmail, String strPassword) {
         // can be launched in a separate asynchronous job
-        Result<LoggedInUser> result = authRepository.logIn(email, password);
+        Result<LoggedInUser> result = authRepository.logIn(strEmail, strPassword);
 
         if (result instanceof Result.Success) {
             user = ((Result.Success<LoggedInUser>) result).getData();
@@ -66,9 +66,22 @@ public class AuthViewModel extends ViewModel {
         user = null;
         authRepository.signOut();
     }
-    //calls the authRepository login function and result a result
-    //with a class that inherits from Model
-    //the Results are typed with Error or Success and handles the outcome of the result
+
+    /**
+     * Calls the authRepository login function and result a result
+     * with a class that inherits from Model
+     * the Results are typed with Error or Success and handles the outcome of the result
+     * @param firstName
+     * @param midName
+     * @param lastName
+     * @param sex
+     * @param schoolNo
+     * @param college
+     * @param email
+     * @param password
+     * @param birthdate
+     * Params takes input from the edit texts
+     */
     public void register(String firstName, String midName, String lastName,
                          String sex, String schoolNo, String college, String email,
                          String password, String birthdate) {
@@ -84,7 +97,11 @@ public class AuthViewModel extends ViewModel {
         }
     }
 
-    //Emits the observable live data for the view to observe
+    /**
+     * Emits the observable live data for the view to observe
+     * @param email
+     * @param password
+     */
     public void loginDataChanged(String email, String password) {
 
         if (!isEmailValid(email)) {
@@ -96,7 +113,17 @@ public class AuthViewModel extends ViewModel {
         }
     }
 
-    // Similar to above but for Register fragment
+    /**
+     * Similar to above but for Register fragment
+     * @param firstName
+     * @param midName
+     * @param lastName
+     * @param gender
+     * @param schoolNo
+     * @param college
+     * @param email
+     * @param password
+     */
     public void regisDataChanged(String firstName,
                                  String midName,
                                  String lastName,
@@ -105,9 +132,7 @@ public class AuthViewModel extends ViewModel {
                                  String college,
                                  String email,
                                  String password
-                                 //Date birthdate
     ) {
-
         if (!isNameValid(firstName)) {
             authFormState.setValue(new AuthFormState(R.string.invalid_name, null,
                     null, null, null, null));
@@ -133,11 +158,6 @@ public class AuthViewModel extends ViewModel {
             authFormState.setValue(new AuthFormState(null, null,
                     null, null, R.string.invalid_password, null));
         }
-        /*
-        if (isDateValid(birthdate)) {
-            authFormState.setValue(new AuthFormState(null, null,
-                    null, null, R.string.invalid_password, null));
-        }*/
         else {
             authFormState.setValue(new AuthFormState(true));
         }
@@ -154,7 +174,11 @@ public class AuthViewModel extends ViewModel {
         return !name.trim().isEmpty();
     }
 
-    // A placeholder password validation check03/
+    /**
+     * Start of validation checks for each
+     * @param password
+     * @return
+     */
     protected boolean isPasswordValid(String password) {
         String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–_[{}]:;',?/*~$^+=<>]).{8,20}$";
         Pattern PASSWORD = Pattern.compile(regex);

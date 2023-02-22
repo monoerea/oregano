@@ -37,10 +37,10 @@ public abstract class BaseFragment<VM extends  ViewModel,VB extends ViewBinding,
                              @Nullable Bundle savedInstanceState) {
         binding = (ViewBinding) getFragmentBinding(inflater, container);
         ViewModelFactory factory = new ViewModelFactory(getFragmentRepository());
-        vModel = new ViewModelProvider(this, factory).get(getViewModel());
+        vModel = new ViewModelProvider(this, factory).get(getViewModelLogin());
         return binding.getRoot();
     }
-    protected abstract Class<VM> getViewModel();
+    protected abstract Class<VM> getViewModelLogin();
     protected abstract BR getFragmentRepository();
     protected abstract VB getFragmentBinding(LayoutInflater inflater, ViewGroup container);
 

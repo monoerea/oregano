@@ -30,7 +30,7 @@ import com.mono.oregano.presentation.auth.ViewModelFactory;
 import java.util.Objects;
 
 public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepository> {
-    private AuthViewModel loginViewModel;
+    private AuthViewModel viewModelLogin;
     private FragmentLoginBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -38,29 +38,51 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
                              @Nullable Bundle savedInstanceState) {
         binding = getFragmentBinding(inflater, container);
         ViewModelFactory factory = new ViewModelFactory(getFragmentRepository());
-        vModel = new ViewModelProvider(this, factory).get(getViewModel());
+        vModel = new ViewModelProvider(this, factory).get(getViewModelLogin());
         return binding.getRoot();
     }
 
+    /**
+     * This is the function inherited from the custom base class to be used for all fragments
+     * in order to homogenize or make the code uniform
+     * @return
+     */
     @Override
-    protected Class<AuthViewModel> getViewModel() {
+    protected Class<AuthViewModel> getViewModelLogin() {
         return AuthViewModel.class;
     }
+
+    /**
+     * Function assigns the Repository instance to the View Model class
+     * @return
+     */
     @Override
     protected AuthRepository getFragmentRepository() {
         return AuthRepository.getInstance();
     }
+
+    /**
+     * Gets the binded view or xml file and inflates it
+     * @param inflater
+     * @param container
+     * @return
+     */
     @Override
     protected FragmentLoginBinding getFragmentBinding(LayoutInflater inflater, ViewGroup container) {
         return FragmentLoginBinding.inflate(inflater, container, false);
     }
 
-    //Overridden method from Fragments
-    //Sets the properties of the view on created
+    /**
+     * Overridden method from Fragments
+     * Sets the properties of the view on created
+     * @param view The View returned by {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     * from a previous saved state as given here.
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        loginViewModel = new ViewModelProvider(this, new ViewModelFactory(AuthRepository.getInstance()))
+        viewModelLogin = new ViewModelProvider(this, new ViewModelFactory(AuthRepository.getInstance()))
                 .get(AuthViewModel.class);
 
         final TextInputLayout editTextEmail = binding.email.getRoot();
@@ -70,10 +92,11 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
 
         setUpUI();
 
-
-        //Observes the state emitted from the view model class
-        //and changes the component attributes based on the state
-        loginViewModel.getAuthState().observe(getViewLifecycleOwner(), loginFormState -> {
+        /**
+         * Observes the state emitted from the view model class
+         * and changes the component attributes based on the state
+         */
+        viewModelLogin.getAuthState().observe(getViewLifecycleOwner(), loginFormState -> {
             if (loginFormState == null) {
                 return;
             }
@@ -92,9 +115,11 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
 
         });
 
-        //Observe the emitted Auth result form the ViewModel livedata
-        //Updates the UI to inform if login was a success or fail
-        loginViewModel.getAuthResult().observe(getViewLifecycleOwner(), loginResult -> {
+        /**
+         * Observe the emitted Auth result form the ViewModel livedata
+         * Updates the UI to inform if login was a success or fail
+         */
+        viewModelLogin.getAuthResult().observe(getViewLifecycleOwner(), loginResult -> {
             if (loginResult == null) {
                 return;
             }
@@ -106,7 +131,9 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
                 updateUiWithUser(loginResult.getSuccess());
             }
         });
-        //Variable used to observe the changes to the input for each character entered
+        /**
+         * Variable used to observe the changes to the input for each character entered
+         */
         TextWatcher afterTextChangedListener = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -120,7 +147,7 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
 
             @Override
             public void afterTextChanged(Editable s) {
-                loginViewModel.loginDataChanged(Objects.requireNonNull(
+                viewModelLogin.loginDataChanged(Objects.requireNonNull(
                         editTextEmail.getEditText()).getText().toString(),
                         Objects.requireNonNull(editTextPassword.getEditText()).toString());
             }
@@ -129,22 +156,27 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
         Objects.requireNonNull(editTextPassword.getEditText()).addTextChangedListener(afterTextChangedListener);
         editTextPassword.getEditText().setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                loginViewModel.login(editTextEmail.getEditText().getText().toString(),
+                viewModelLogin.login(editTextEmail.getEditText().getText().toString(),
                         editTextPassword.getEditText().getText().toString());
             }
             return false;
         });
-        //Sends the current accepted data from view to string to login
+        /**
+         * Sends the current accepted data from view to string to login
+         */
         btnLogin.setOnClickListener(v -> {
             loadingProgressBar.setVisibility(View.VISIBLE);
-            loginViewModel.login(editTextEmail.getEditText().getText().toString(),
+            viewModelLogin.login(editTextEmail.getEditText().getText().toString(),
                     editTextPassword.getEditText().getText().toString());
         });
 
 
     }
-    //Method that sets the success message for the view and navigates to
-    // a new view
+
+    /**
+     * Method that sets the success message for the view and navigates to
+     * a new view
+     */
     private void setUpUI(){
         binding.headerTitle.getRoot().setText(R.string.action_sign_in);
         binding.createAccount.getRoot().setText(R.string.prompt_redirect);
@@ -155,6 +187,9 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
                         R.id.action_loginFragment_to_registerFragment));
     }
 
+    /**
+     * @param model Updates the Ui with a system message welcoming the created user
+     */
     private void updateUiWithUser(AuthUserView model) {
         String welcome = getString(R.string.welcome) + model.getFullName();
         // TODO : initiate successful logged in experience
@@ -163,8 +198,12 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
         }
 
     }
-    //Method that sets the fail message for the view
-    // and displays the context
+
+    /**
+     * Method that sets the fail message for the view
+     * and displays the context
+     * @param errorString
+     */
     private void showLoginFailed(@StringRes Integer errorString) {
         if (getContext() != null && getContext().getApplicationContext() != null) {
             Toast.makeText(
@@ -174,12 +213,14 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
         }
     }
 
-@Override
-    //Describes what to do the View upon destroy
-    // Logs out the user if the button is not checked
+    /**
+     * Describes what to do the View upon destroy
+     * Logs out the user if the button is not checked
+     */
+    @Override
     public void onDestroyView() {
         final CheckBox checkBox = binding.checkbox.getRoot();
-        loginViewModel.signOut(checkBox.isChecked());
+        viewModelLogin.signOut(checkBox.isChecked());
         super.onDestroyView();
         binding = null;
     }

@@ -35,7 +35,7 @@ import java.util.Objects;
 
 public class RegisterFragment extends BaseFragment<AuthViewModel, FragmentRegisterBinding, AuthRepository> {
 
-    private AuthViewModel registerViewModel;
+    private AuthViewModel viewModelRegister;
     private FragmentRegisterBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -43,28 +43,55 @@ public class RegisterFragment extends BaseFragment<AuthViewModel, FragmentRegist
                              @Nullable Bundle savedInstanceState) {
         binding = getFragmentBinding(inflater, container);
         ViewModelFactory factory = new ViewModelFactory(getFragmentRepository());
-        vModel = new ViewModelProvider(this, factory).get(getViewModel());
+        vModel = new ViewModelProvider(this, factory).get(getViewModelLogin());
         return binding.getRoot();
     }
+
+    /**
+     * This is the function inherited from the custom base class to be used for all fragments
+     * in order to homogenize or make the code uniform
+     *
+     * @return
+     */
     @Override
-    protected Class<AuthViewModel> getViewModel() {
+    protected Class<AuthViewModel> getViewModelLogin() {
         return AuthViewModel.class;
     }
+
+    /**
+     * Function assigns the Repository instance to the View Model class
+     *
+     * @return
+     */
     @Override
     protected AuthRepository getFragmentRepository() {
         return AuthRepository.getInstance();
     }
 
+    /**
+     * Gets the binded view or xml file and inflates it
+     *
+     * @param inflater
+     * @param container
+     * @return
+     */
     @Override
     protected FragmentRegisterBinding getFragmentBinding(LayoutInflater inflater, ViewGroup container) {
         return FragmentRegisterBinding.inflate(inflater, container, false);
     }
-    //Overridden method from Fragments
-    //Sets the properties of the view on created
+
+    /**
+     * Overridden method from Fragments
+     * Sets the properties of the view on created
+     *
+     * @param view               The View returned by {@link #onCreateView(LayoutInflater, ViewGroup, Bundle)}.
+     * @param savedInstanceState If non-null, this fragment is being re-constructed
+     *                           from a previous saved state as given here.
+     */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        registerViewModel = new ViewModelProvider(this, new ViewModelFactory(AuthRepository.getInstance()))
+        viewModelRegister = new ViewModelProvider(this, new ViewModelFactory(AuthRepository.getInstance()))
                 .get(AuthViewModel.class);
 
         final TextInputLayout edtTxtFirstName = binding.firstName.getRoot();
@@ -79,51 +106,54 @@ public class RegisterFragment extends BaseFragment<AuthViewModel, FragmentRegist
         final Button btnRegister = binding.register.getRoot();
         final ProgressBar loadingProgressBar = binding.progressBar.getRoot();
 
+        //calls the function that sets up the necessary variables
         setUpUI();
-        //Observes the state emitted from the view model class
-        //and changes the component attributes based on the state
-        registerViewModel.getAuthState().observe(getViewLifecycleOwner(), regisFormState -> {
+        /**
+         * Observes the state emitted from the view model class
+         * and changes the component attributes based on the state
+         */
+        viewModelRegister.getAuthState().observe(getViewLifecycleOwner(), regisFormState -> {
             if (regisFormState == null) {
                 return;
             }
             btnRegister.setEnabled(regisFormState.isDataValid());
 
-            if (regisFormState.getFirstNameError()!= null){
+            if (regisFormState.getFirstNameError() != null) {
                 edtTxtFirstName.setError(getString(regisFormState.getFirstNameError()));
-            }else {
+            } else {
                 edtTxtFirstName.setError(null);
             }
-            if (regisFormState.getMidNameError()!= null){
+            if (regisFormState.getMidNameError() != null) {
                 edtTextMidName.setError(getString(regisFormState.getMidNameError()));
-            }else {
+            } else {
                 edtTextMidName.setError(null);
             }
-            if (regisFormState.getLastNameError()!= null){
+            if (regisFormState.getLastNameError() != null) {
                 edtTxtLastName.setError(getString(regisFormState.getLastNameError()));
-            }else {
+            } else {
                 edtTxtLastName.setError(null);
             }
-            if (regisFormState.getSchoolNumError()!= null){
+            if (regisFormState.getSchoolNumError() != null) {
                 edtTxtSchoolNum.setError(getString(regisFormState.getSchoolNumError()));
-            }else{
+            } else {
                 edtTxtSchoolNum.setError(null);
             }
 
             if (regisFormState.getEmailError() != null) {
                 edtTxtEmail.setError(getString(regisFormState.getEmailError()));
-            }else {
+            } else {
                 edtTxtEmail.setError(null);
             }
             if (regisFormState.getPasswordError() != null) {
                 edtTxtPassword.setError(getString(regisFormState.getPasswordError()));
-            }else{
+            } else {
                 edtTxtPassword.setError(null);
             }
         });
 
         //Observe the emitted Auth result form the ViewModel livedata
         //Updates the UI to inform if login was a success or fail
-        registerViewModel.getAuthResult().observe(getViewLifecycleOwner(), regisResult -> {
+        viewModelRegister.getAuthResult().observe(getViewLifecycleOwner(), regisResult -> {
             if (regisResult == null) {
                 return;
             }
@@ -136,7 +166,9 @@ public class RegisterFragment extends BaseFragment<AuthViewModel, FragmentRegist
             }
         });
 
-        //Variable used to observe the changes to the input for each character entered
+        /**
+         * Variable used to observe the changes to the input for each character entered
+         */
         TextWatcher afterTextChangedListener = new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -148,10 +180,14 @@ public class RegisterFragment extends BaseFragment<AuthViewModel, FragmentRegist
                 // ignore
             }
 
+            /**
+             * Overrides the
+             * @param s
+             */
             @Override
             public void afterTextChanged(Editable s) {
                 //TODO: create the regis fragment to support the other shit
-                registerViewModel.regisDataChanged(Objects.requireNonNull(edtTxtFirstName.getEditText()).getText().toString(),
+                viewModelRegister.regisDataChanged(Objects.requireNonNull(edtTxtFirstName.getEditText()).getText().toString(),
                         Objects.requireNonNull(edtTextMidName.getEditText()).getText().toString(),
                         Objects.requireNonNull(edtTxtLastName.getEditText()).getText().toString(),
                         Objects.requireNonNull(dropSex.getRoot().getEditText()).getText().toString(),
@@ -162,12 +198,13 @@ public class RegisterFragment extends BaseFragment<AuthViewModel, FragmentRegist
                         //Date.valueOf(Objects.requireNonNull(pkrBirthday.getEditText()).toString())
                 );
             }
-        };
+        };//afterTextChangedListener
+
         Objects.requireNonNull(edtTxtEmail.getEditText()).addTextChangedListener(afterTextChangedListener);
         Objects.requireNonNull(edtTxtPassword.getEditText()).addTextChangedListener(afterTextChangedListener);
         edtTxtPassword.getEditText().setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                registerViewModel.register(Objects.requireNonNull(edtTxtFirstName.getEditText()).getText().toString(),
+                viewModelRegister.register(Objects.requireNonNull(edtTxtFirstName.getEditText()).getText().toString(),
                         Objects.requireNonNull(edtTextMidName.getEditText()).getText().toString(),
                         Objects.requireNonNull(edtTxtLastName.getEditText()).getText().toString(),
                         Objects.requireNonNull(dropSex.getRoot().getEditText()).getText().toString(),
@@ -176,14 +213,14 @@ public class RegisterFragment extends BaseFragment<AuthViewModel, FragmentRegist
                         edtTxtEmail.getEditText().getText().toString(),
                         edtTxtPassword.getEditText().toString(),
                         Objects.requireNonNull(pkrBirthday.getEditText()).toString()
-                        );
+                );
             }
             return false;
-        });
+        });//setOnEditorActionListener
 
         btnRegister.setOnClickListener(v -> {
             loadingProgressBar.setVisibility(View.VISIBLE);
-            registerViewModel.register(Objects.requireNonNull(edtTxtFirstName.getEditText()).getText().toString(),
+            viewModelRegister.register(Objects.requireNonNull(edtTxtFirstName.getEditText()).getText().toString(),
                     Objects.requireNonNull(edtTextMidName.getEditText()).getText().toString(),
                     Objects.requireNonNull(edtTxtLastName.getEditText()).getText().toString(),
                     Objects.requireNonNull(dropSex.getRoot().getEditText()).getText().toString(),
@@ -194,7 +231,11 @@ public class RegisterFragment extends BaseFragment<AuthViewModel, FragmentRegist
                     Objects.requireNonNull(pkrBirthday.getEditText()).toString());
 
         });
-    }
+    }//OnViewCreated
+
+    /**
+     * Public functions separate from Fragment methods
+     */
     //Sets up the initial values in the view
     public void setUpUI(){
 

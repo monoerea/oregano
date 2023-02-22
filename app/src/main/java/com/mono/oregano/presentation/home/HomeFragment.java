@@ -31,7 +31,7 @@ public class HomeFragment extends BaseFragment<HomeViewModel, FragmentHomeBindin
     }
 
     @Override
-    protected Class<HomeViewModel> getViewModel() {
+    protected Class<HomeViewModel> getViewModelLogin() {
         return HomeViewModel.class;
     }
 

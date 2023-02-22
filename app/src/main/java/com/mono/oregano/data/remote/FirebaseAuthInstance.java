@@ -76,9 +76,11 @@ public class FirebaseAuthInstance implements DataSources {
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener((Executor) this, task -> {
             if (task.isSuccessful()){
                 user = mAuth.getCurrentUser();
+                loggedUser = new LoggedInUser(user.getUid(), user.getEmail());
                 //Log.i(TAG, "createUserWithEmail:success");
                 //TODO: create a Document in Firebase FireStore that adds extra info
             }
+
         });
 
     }

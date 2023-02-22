@@ -18,10 +18,9 @@ import com.mono.oregano.presentation.BaseFragment;
 
 public class StartScreenFragment extends BaseFragment<AuthViewModel, FragmentStartScreenBinding, AuthRepository> {
     private FragmentStartScreenBinding binding;
-    private AuthViewModel authViewModel;
 
     @Override
-    protected Class<AuthViewModel> getViewModel() {
+    protected Class<AuthViewModel> getViewModelLogin() {
         return AuthViewModel.class;
     }
 
@@ -41,7 +40,7 @@ public class StartScreenFragment extends BaseFragment<AuthViewModel, FragmentSta
                              @Nullable Bundle savedInstanceState) {
         binding = getFragmentBinding(inflater, container);
         ViewModelFactory factory = new ViewModelFactory(getFragmentRepository());
-        vModel = new ViewModelProvider(this, factory).get(getViewModel());
+        vModel = new ViewModelProvider(this, factory).get(getViewModelLogin());
         return binding.getRoot();
     }
     @Override
