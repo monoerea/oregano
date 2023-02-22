@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:fontFamily="@font/archivo_medium"
     android:text="@string/action_sign_up"
     android:textColor="@color/design_default_color_on_primary"
     android:textSize="@dimen/text_height"
