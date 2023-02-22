@@ -13,6 +13,8 @@ import com.mono.oregano.data.model.users.baseUser;
 import com.mono.oregano.data.repository.user.AuthRepository;
 import com.mono.oregano.domain.util.Result;
 
+import java.util.regex.Pattern;
+
 /**
  * Shared view-model class
  * Class that contains the logic for non view related functions
@@ -52,7 +54,7 @@ public class AuthViewModel extends ViewModel {
         }
     }
     public void signOut(boolean checked){
-        if (checked== true){
+        if (checked){
             return;
         }
         user = null;
@@ -125,8 +127,11 @@ public class AuthViewModel extends ViewModel {
     }
 
     // A placeholder password validation check
+
     protected boolean isPasswordValid(String password) {
-        return password != null && password.trim().length() >= 8;
+        String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–_[{}]:;',?/*~$^+=<>]).{8,20}$";
+        Pattern PASSWORD = Pattern.compile(regex);
+        return password != null && PASSWORD.matcher(password).matches();
     }
 
     protected boolean isEmailValid(String email) {
@@ -137,10 +142,10 @@ public class AuthViewModel extends ViewModel {
             return Patterns.EMAIL_ADDRESS.matcher(email).matches();
         }
     }
-
-    protected boolean isSchoolNumValid(String schoolNum) {
-        //TODO: MATCH THE SCHOOL NUMBER TO REGEX
-        return schoolNum != null && schoolNum.trim().length() >= 15;
+    protected boolean isSchoolNumValid(String schoolNum){
+        String regex = "^(?:(?:19|20)[0-9]{2})-([1-9]{5})-([A-Z]{2})-([0-9]{1})";
+        Pattern SCHOOL_NUM = Pattern.compile(regex);
+        return schoolNum != null && SCHOOL_NUM.matcher(schoolNum).matches();
     }
 
     protected boolean isNameValid(String name) {
