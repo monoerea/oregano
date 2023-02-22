@@ -7,7 +7,7 @@ import com.mono.oregano.data.repository.Result;
 
 public class RegisRepository {
     private static volatile RegisRepository instance;
-    private FirebaseAuthInstance dataSource;
+    private final FirebaseAuthInstance dataSource;
 
     private User user = null;
 
@@ -28,8 +28,8 @@ public class RegisRepository {
         this.user = user;
     }
 
-    public Result<User> register(String firstName, String midName, String lastName, String gender, String schoolNo, String email, String password){
-        Result<User> result= dataSource.register(firstName, midName, lastName, gender, schoolNo, email, password);
+    public Result<User> register(String firstName, String midName, String lastName, String sex, String schoolNo, String college, String birthdate, String email, String password){
+        Result<User> result= dataSource.register(firstName, midName, lastName, sex, schoolNo, college, birthdate, email, password);
         if (result instanceof Result.Success) {
             setRegisUser(((Result.Success<LoggedInUser>) result).getData());
         }

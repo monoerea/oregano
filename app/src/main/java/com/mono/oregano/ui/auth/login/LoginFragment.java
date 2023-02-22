@@ -3,7 +3,6 @@ package com.mono.oregano.ui.auth.login;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,6 +26,8 @@ import com.mono.oregano.ui.BaseFragment;
 import com.mono.oregano.ui.auth.AuthUserView;
 import com.mono.oregano.ui.auth.AuthViewModel;
 import com.mono.oregano.ui.auth.ViewModelFactory;
+
+import java.util.Objects;
 
 public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBinding, AuthRepository> {
 
@@ -70,12 +70,7 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
         binding.headerTitle.getRoot().setText(R.string.action_sign_in);
         signUp.setText(R.string.prompt_redirect);
 
-        signUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                uiUtil.navigate(binding.getRoot(), binding.createAccount.getRoot(), R.id.action_loginFragment_to_registerFragment);
-            }
-        });
+        signUp.setOnClickListener(v -> uiUtil.navigate(binding.getRoot(), binding.createAccount.getRoot(), R.id.action_loginFragment_to_registerFragment));
 
         loginViewModel.getAuthState().observe(getViewLifecycleOwner(), loginFormState -> {
             if (loginFormState == null) {
@@ -122,30 +117,25 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
 
             @Override
             public void afterTextChanged(Editable s) {
-                loginViewModel.loginDataChanged(emailRoot.getEditText().getText().toString(),
-                        passwordEditText.getEditText().toString());
+                loginViewModel.loginDataChanged(
+                        Objects.requireNonNull(emailRoot.getEditText()).getText().toString(),
+                        Objects.requireNonNull(passwordEditText.getEditText()).toString());
             }
         };
-        emailRoot.getEditText().addTextChangedListener(afterTextChangedListener);
-        passwordEditText.getEditText().addTextChangedListener(afterTextChangedListener);
-        passwordEditText.getEditText().setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    loginViewModel.login(emailRoot.getEditText().getText().toString(),
-                            passwordEditText.getEditText().getText().toString());
-                }
-                return false;
-            }
-        });
-
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadingProgressBar.setVisibility(View.VISIBLE);
+        Objects.requireNonNull(emailRoot.getEditText()).addTextChangedListener(afterTextChangedListener);
+        Objects.requireNonNull(passwordEditText.getEditText()).addTextChangedListener(afterTextChangedListener);
+        passwordEditText.getEditText().setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
                 loginViewModel.login(emailRoot.getEditText().getText().toString(),
                         passwordEditText.getEditText().getText().toString());
             }
+            return false;
+        });
+
+        loginButton.setOnClickListener(v -> {
+            loadingProgressBar.setVisibility(View.VISIBLE);
+            loginViewModel.login(emailRoot.getEditText().getText().toString(),
+                    passwordEditText.getEditText().getText().toString());
         });
 
 
