@@ -15,6 +15,8 @@ import com.mono.oregano.domain.util.Result;
 
 import java.util.regex.Pattern;
 
+import java.util.Date;
+
 /**
  * Shared view-model class
  * Class that contains the logic for non view related functions
@@ -60,9 +62,11 @@ public class AuthViewModel extends ViewModel {
         user = null;
         authRepository.signOut();
     }
-    public void register(String firstName, String midName, String lastName, String gender, String schoolNo,String email, String password) {
+    public void register(String firstName, String midName, String lastName,
+                         String sex, String schoolNo, String college , String email,
+                         String password, Date birthdate) {
         // can be launched in a separate asynchronous job
-        Result<? extends Model> result = authRepository.registerLogin(firstName, midName, lastName, gender, schoolNo,email, password);
+        Result<? extends Model> result = authRepository.registerLogin(firstName, midName, lastName, sex, schoolNo,college,email, password, birthdate);
 
         if (result instanceof Result.Success) {
 
@@ -90,8 +94,10 @@ public class AuthViewModel extends ViewModel {
                                  String lastName,
                                  String gender,
                                  String schoolNo,
+                                 String college,
                                  String email,
-                                 String password) {
+                                 String password,
+                                 Date birthdate) {
 
         if (!isNameValid(firstName)){
             authFormState.setValue(new AuthFormState(R.string.invalid_name, null,
@@ -109,6 +115,10 @@ public class AuthViewModel extends ViewModel {
             authFormState.setValue(new AuthFormState(null, null,
                     null,null,null, R.string.invalid_school_num));
         }
+        else if (!isNameValid(college)){
+            authFormState.setValue(new AuthFormState(null, null,
+                    null,null,null, R.string.invalid_school_num));
+        }
         else if (!isSchoolNumValid(schoolNo)){
             authFormState.setValue(new AuthFormState(null, null,
                     null,null,null, R.string.invalid_school_num));
@@ -118,6 +128,10 @@ public class AuthViewModel extends ViewModel {
                     null,R.string.invalid_email, null, null));
         }
         else if (!isPasswordValid(password)) {
+            authFormState.setValue(new AuthFormState(null,null,
+                    null,null, R.string.invalid_password,null));
+        }
+        if (isDateValid(birthdate)){
             authFormState.setValue(new AuthFormState(null,null,
                     null,null, R.string.invalid_password,null));
         }
@@ -146,6 +160,14 @@ public class AuthViewModel extends ViewModel {
         String regex = "^(?:(?:19|20)[0-9]{2})-([1-9]{5})-([A-Z]{2})-([0-9]{1})";
         Pattern SCHOOL_NUM = Pattern.compile(regex);
         return schoolNum != null && SCHOOL_NUM.matcher(schoolNum).matches();
+
+    protected boolean isDateValid(Date date){
+        return date!= null;
+    }
+
+    protected boolean isSchoolNumValid(String schoolNum) {
+        //TODO: MATCH THE SCHOOL NUMBER TO REGEX
+        return schoolNum != null && schoolNum.trim().length() >= 15;
     }
 
     protected boolean isNameValid(String name) {

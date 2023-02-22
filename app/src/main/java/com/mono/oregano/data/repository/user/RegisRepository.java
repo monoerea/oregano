@@ -1,9 +1,12 @@
 package com.mono.oregano.data.repository.user;
 
+import com.mono.oregano.data.model.UserModel;
 import com.mono.oregano.data.model.users.LoggedInUser;
 import com.mono.oregano.data.model.users.baseUser;
 import com.mono.oregano.data.remote.FirebaseAuthInstance;
 import com.mono.oregano.domain.util.Result;
+
+import java.util.Date;
 
 public class RegisRepository {
     private static volatile RegisRepository instance;
@@ -28,8 +31,11 @@ public class RegisRepository {
         this.user = user;
     }
 
-    public Result<baseUser> register(String firstName, String midName, String lastName, String gender, String schoolNo, String email, String password){
-        Result<baseUser> result= dataSource.register(firstName, midName, lastName, gender, schoolNo, email, password);
+    public Result<UserModel> register(String firstName, String midName, String lastName,
+                                      String sex, String schoolNo,String college,
+                                      String email, String password, Date birthday){
+        Result<UserModel> result= (Result<UserModel>) dataSource.register(firstName, midName, lastName, sex,
+                schoolNo, college, email, password, birthday);
         if (result instanceof Result.Success) {
             setRegisUser(((Result.Success<LoggedInUser>) result).getData());
         }

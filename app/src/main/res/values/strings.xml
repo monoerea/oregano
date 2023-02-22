@@ -4,6 +4,7 @@
     <string name="register_failed">Register failed</string>
     <string name="title_activity_auth">AuthActivity</string>
     <string name="prompt_email">Email</string>
+    <string name="prompt_birthday">Birthdate</string>
     <string name="prompt_password">Password</string>
     <string name="prompt_select">Select value</string>
     <string name="action_auth">Sign in or register</string>

@@ -67,13 +67,9 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
         final TextInputLayout editTextPassword = binding.password.getRoot();
         final Button btnLogin = binding.login.getRoot();
         final ProgressBar loadingProgressBar = binding.progressBar.getRoot();
-        final Button btnRedirect = binding.createAccount.getRoot();
 
-        binding.headerTitle.getRoot().setText(R.string.action_sign_in);
-        btnRedirect.setText(R.string.prompt_redirect);
+        setUpUI();
 
-        //Navigation to redirect to register fragment
-        btnRedirect.setOnClickListener(v -> uiUtil.navigate(binding.getRoot(), binding.createAccount.getRoot(), R.id.action_loginFragment_to_registerFragment));
 
         //Observes the state emitted from the view model class
         //and changes the component attributes based on the state
@@ -148,6 +144,16 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
     }
     //Method that sets the success message for the view and navigates to
     // a new view
+    private void setUpUI(){
+        binding.headerTitle.getRoot().setText(R.string.action_sign_in);
+        binding.createAccount.getRoot().setText(R.string.prompt_redirect);
+
+        //Navigation to redirect to register fragment
+        binding.createAccount.getRoot().setOnClickListener(v ->
+                uiUtil.navigate(binding.getRoot(), binding.createAccount.getRoot(),
+                        R.id.action_loginFragment_to_registerFragment));
+    }
+
     private void updateUiWithUser(AuthUserView model) {
         String welcome = getString(R.string.welcome) + model.getFullName();
         // TODO : initiate successful logged in experience

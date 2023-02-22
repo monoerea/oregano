@@ -2,15 +2,14 @@ package com.mono.oregano.data.model;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.mono.oregano.domain.entity.Users.UserEntity;
-import com.mono.oregano.domain.util.Sex;
 
 import java.util.Date;
 
 public class UserModel extends UserEntity implements Model {
     public UserModel(String id, String firstName, String midName, String lastName,
-                     String gender, Sex sex, String schoolNo, String strCollege,
+                     String sex, String schoolNo, String strCollege,
                      String email, String password, Date dateBirthday, Date createdAt) {
-        super(id, firstName, midName, lastName, gender, sex, schoolNo, strCollege,
+        super(id, firstName, midName, lastName, sex, schoolNo, strCollege,
                 email, password, dateBirthday, createdAt);
     }
 
@@ -20,8 +19,7 @@ public class UserModel extends UserEntity implements Model {
                 snapshot.getString(getFirstName()),
                 snapshot.getString(getMidName()),
                 snapshot.getString(getLastName()),
-                snapshot.getString(getGender()),
-                (Sex) snapshot.get(getSex().toString()), //TODO: casting might not work
+                snapshot.getString(getSex()), //TODO: casting might not work
                 snapshot.getString(getSchoolNo()),
                 snapshot.getString(getCollege()),
                 snapshot.getString(getEmail()),

@@ -42,7 +42,7 @@
             android:layout_below="@id/midName"
             />
         <include
-            android:id="@+id/gender"
+            android:id="@+id/sex"
             layout="@layout/drop_down_edit_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -53,7 +53,7 @@
             layout="@layout/edit_text_design"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/gender"
+            android:layout_below="@id/sex"
             />
         <include
             android:id="@+id/college"
@@ -63,11 +63,17 @@
             android:layout_below="@id/schoolNum"
             />
         <include
+            android:id="@+id/date"
+            layout="@layout/date_picker"
+            android:layout_below="@id/college"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <include
             android:id="@+id/email"
             layout="@layout/edit_text_design"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/college"/>
+            android:layout_below="@id/date"/>
         <include
             android:id="@+id/password"
             layout="@layout/password_edit_text"

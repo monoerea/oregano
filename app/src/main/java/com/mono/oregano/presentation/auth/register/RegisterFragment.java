@@ -31,6 +31,7 @@ import com.mono.oregano.presentation.auth.AuthUserView;
 import com.mono.oregano.presentation.auth.AuthViewModel;
 import com.mono.oregano.presentation.auth.ViewModelFactory;
 
+import java.sql.Date;
 import java.util.Objects;
 
 public class RegisterFragment extends BaseFragment<AuthViewModel, FragmentRegisterBinding, AuthRepository> {
@@ -66,37 +67,20 @@ public class RegisterFragment extends BaseFragment<AuthViewModel, FragmentRegist
         super.onViewCreated(view, savedInstanceState);
         registerViewModel = new ViewModelProvider(this, new ViewModelFactory(AuthRepository.getInstance()))
                 .get(AuthViewModel.class);
-        binding.headerTitle.getRoot().setText(R.string.action_sign_up);
+
         final TextInputLayout fNameEditText = binding.firstName.getRoot();
         final TextInputLayout mNameEditText = binding.midName.getRoot();
         final TextInputLayout lNameEditText = binding.lastName.getRoot();
-        final DropDownEditTextBinding genderDropDown = binding.gender;
+        final DropDownEditTextBinding dropSex = binding.sex;
         final DropDownEditTextBinding dropCollege = binding.college;
         final TextInputLayout schoolNumEditText = binding.schoolNum.getRoot();
         final TextInputLayout emailEditText = binding.email.getRoot();
         final TextInputLayout passwordEditText = binding.password.getRoot();
+        final TextInputLayout pkrBirthday = binding.date.getRoot();
         final Button btnRegister = binding.register.getRoot();
-        final Button btnSignIn = binding.loginNow.getRoot();
         final ProgressBar loadingProgressBar = binding.progressBar.getRoot();
 
-        btnRegister.setText(R.string.action_sign_up);
-        fNameEditText.setHint(R.string.first_name);
-        mNameEditText.setHint(R.string.mid_name);
-        lNameEditText.setHint(R.string.last_name);
-        genderDropDown.getRoot().setHint(R.string.gender);
-        dropCollege.getRoot().setHint(R.string.college);
-        schoolNumEditText.setHint(R.string.school_num);
-
-        setDropDown(this.getContext(),genderDropDown.autofill, Constants.sex);
-        setDropDown(this.getContext(),dropCollege.autofill, Constants.college);
-
-        btnSignIn.setText(R.string.prompt_register_redirect);
-
-        //Navigation to redirect to login fragment
-        btnSignIn.setOnClickListener(v -> uiUtil.navigate(binding.getRoot(),
-                binding.loginNow.getRoot(), R.id.action_registerFragment_to_loginFragment));
-
-
+        setUpUI();
         //Observes the state emitted from the view model class
         //and changes the component attributes based on the state
         registerViewModel.getAuthState().observe(getViewLifecycleOwner(), regisFormState -> {
@@ -171,10 +155,13 @@ public class RegisterFragment extends BaseFragment<AuthViewModel, FragmentRegist
                 registerViewModel.regisDataChanged(Objects.requireNonNull(fNameEditText.getEditText()).getText().toString(),
                         Objects.requireNonNull(mNameEditText.getEditText()).getText().toString(),
                         Objects.requireNonNull(lNameEditText.getEditText()).getText().toString(),
-                        Objects.requireNonNull(genderDropDown.getRoot().getEditText()).getText().toString(),
+                        Objects.requireNonNull(dropSex.getRoot().getEditText()).getText().toString(),
                         Objects.requireNonNull(schoolNumEditText.getEditText()).getText().toString(),
+                        Objects.requireNonNull(dropCollege.getRoot().getEditText()).getText().toString(),
                         Objects.requireNonNull(emailEditText.getEditText()).getText().toString(),
-                        Objects.requireNonNull(passwordEditText.getEditText()).getText().toString());
+                        Objects.requireNonNull(passwordEditText.getEditText()).getText().toString(),
+                        Date.valueOf(Objects.requireNonNull(pkrBirthday.getEditText()).toString())
+                );
             }
         };
         Objects.requireNonNull(emailEditText.getEditText()).addTextChangedListener(afterTextChangedListener);
@@ -184,10 +171,13 @@ public class RegisterFragment extends BaseFragment<AuthViewModel, FragmentRegist
                 registerViewModel.register(Objects.requireNonNull(fNameEditText.getEditText()).getText().toString(),
                         Objects.requireNonNull(mNameEditText.getEditText()).getText().toString(),
                         Objects.requireNonNull(lNameEditText.getEditText()).getText().toString(),
-                        Objects.requireNonNull(genderDropDown.getRoot().getEditText()).getText().toString(),
+                        Objects.requireNonNull(dropSex.getRoot().getEditText()).getText().toString(),
+                        Objects.requireNonNull(dropCollege.getRoot().getEditText()).getText().toString(),
                         Objects.requireNonNull(schoolNumEditText.getEditText()).getText().toString(),
                         emailEditText.getEditText().getText().toString(),
-                        passwordEditText.getEditText().toString());
+                        passwordEditText.getEditText().toString(),
+                        Objects.requireNonNull(Date.valueOf(Objects.requireNonNull(pkrBirthday.getEditText()).toString()))
+                        );
             }
             return false;
         });
@@ -197,11 +187,44 @@ public class RegisterFragment extends BaseFragment<AuthViewModel, FragmentRegist
             registerViewModel.register(Objects.requireNonNull(fNameEditText.getEditText()).getText().toString(),
                     Objects.requireNonNull(mNameEditText.getEditText()).getText().toString(),
                     Objects.requireNonNull(lNameEditText.getEditText()).getText().toString(),
-                    Objects.requireNonNull(genderDropDown.getRoot().getEditText()).getText().toString(),
+                    Objects.requireNonNull(dropSex.getRoot().getEditText()).getText().toString(),
                     Objects.requireNonNull(schoolNumEditText.getEditText()).getText().toString(),
+                    Objects.requireNonNull(dropCollege.getRoot().getEditText()).getText().toString(),
                     emailEditText.getEditText().getText().toString(),
-                    passwordEditText.getEditText().toString());
+                    passwordEditText.getEditText().toString(),
+                    Objects.requireNonNull(Date.valueOf(Objects.requireNonNull(pkrBirthday.getEditText()).toString()))
+                    );
         });
+    }
+    //Sets up the initial values in the view
+    public void setUpUI(){
+
+        //TODO: restate the resources to proper icons
+
+        binding.headerTitle.getRoot().setText(R.string.action_sign_up);
+
+        binding.register.getRoot().setText(R.string.action_sign_up);
+        binding.firstName.getRoot().setHint(R.string.first_name);
+        binding.midName.getRoot().setHint(R.string.mid_name);
+        binding.lastName.getRoot().setHint(R.string.last_name);
+        binding.sex.getRoot().setHint(R.string.gender);
+        binding.college.getRoot().setHint(R.string.college);
+        binding.schoolNum.getRoot().setHint(R.string.school_num);
+
+        setDropDown(this.getContext(),binding.sex.autofill, Constants.SEX);
+        setDropDown(this.getContext(),binding.college.autofill, Constants.COLLEGE);
+
+        binding.loginNow.getRoot().setText(R.string.prompt_register_redirect);
+
+        //Navigation to redirect to login fragment
+        binding.loginNow.getRoot().setOnClickListener(v -> uiUtil.navigate(binding.getRoot(),
+                binding.loginNow.getRoot(), R.id.action_registerFragment_to_loginFragment));
+    }
+
+    //Build the Date Picker
+    public void setDatePicker(){
+        //TODO: implement the date picker to docked picker
+        //in conjunction with material design 3
     }
 
     public void setDropDown(Context context, AutoCompleteTextView dropdown, String[] items){

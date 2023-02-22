@@ -1,7 +1,6 @@
 package com.mono.oregano.domain.entity.Users;
 
 import com.mono.oregano.data.model.Posts;
-import com.mono.oregano.domain.util.Sex;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,8 +15,7 @@ public class UserEntity {
     private String strMidName;
     private String strLastName;
     private String strFullName;
-    private String strGender;
-    private Sex biSex;
+    private String strSex;
 
     private String strCollege;
     private String schoolNo;
@@ -43,14 +41,13 @@ public class UserEntity {
     public UserEntity(){}
 
     public UserEntity(String id, String firstName, String midName,
-                      String lastName, String gender, Sex sex, String schoolNo,String strCollege,
+                      String lastName, String sex, String schoolNo,String strCollege,
                       String email, String password,Date dateBirthday, Date createdAt){
         this.id = id;
         this.strFirstName = firstName;
         this.strMidName = midName;
         this.strLastName = lastName;
-        this.strGender = gender;
-        this.biSex = sex;
+        this.strSex = sex;
         this.schoolNo = schoolNo;
         this.strCollege = strCollege;
         this.email = email;
@@ -101,19 +98,11 @@ public class UserEntity {
         this.strFullName = fullName;
     }
 
-    public String getGender() {
-        return strGender;
+    public String getSex(){
+        return  this.strSex;
     }
-
-    public void setGender(String gender) {
-        this.strGender = gender;
-    }
-
-    public Sex getSex(){
-        return  this.biSex;
-    }
-    public void setSex(Sex sex) {
-        this.biSex = sex;
+    public void setSex(String sex) {
+        this.strSex = sex;
     }
 
     public String getSchoolNo() {

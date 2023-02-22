@@ -12,11 +12,13 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.mono.oregano.data.model.Model;
+import com.mono.oregano.data.model.UserModel;
 import com.mono.oregano.data.model.users.LoggedInUser;
-import com.mono.oregano.data.model.users.baseUser;
 import com.mono.oregano.domain.util.Result;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.concurrent.Executor;
 
 public class FirebaseAuthInstance implements DataSources {
@@ -25,7 +27,7 @@ public class FirebaseAuthInstance implements DataSources {
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseUser user;
     private LoggedInUser loggedUser;
-    private baseUser regisUser;
+    private UserModel regisUser;
     public Result<LoggedInUser> login(String email, String password) {
 
         try {
@@ -99,7 +101,9 @@ public class FirebaseAuthInstance implements DataSources {
         return "Logout Success";
     }
 
-    public Result<baseUser> register(String firstName, String midName, String lastName, String gender, String schoolNo, String email, String password) {
+    public Result<? extends Model> register(String firstName, String midName, String lastName,
+                                            String sex, String schoolNo, String college, String email,
+                                            String password, Date birthday) {
         try {
 
             new Thread(new Runnable() {
@@ -114,7 +118,7 @@ public class FirebaseAuthInstance implements DataSources {
 
             }
             String id = user.getUid();
-            regisUser = new baseUser(id, firstName, midName, lastName, gender, schoolNo, email, password);
+            regisUser = new UserModel(id, firstName, midName, lastName,sex, schoolNo, college, email, password, birthday, new Date());
             return new Result.Success<>(regisUser);
         }
         catch (Exception e){

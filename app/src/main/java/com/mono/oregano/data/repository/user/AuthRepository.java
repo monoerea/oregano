@@ -1,6 +1,7 @@
 package com.mono.oregano.data.repository.user;
 
 import com.mono.oregano.data.model.Model;
+import com.mono.oregano.data.model.UserModel;
 import com.mono.oregano.data.model.users.LoggedInUser;
 import com.mono.oregano.data.model.users.User;
 import com.mono.oregano.data.model.users.baseUser;
@@ -9,7 +10,10 @@ import com.mono.oregano.data.remote.FirebaseAuthInstance;
 import com.mono.oregano.data.remote.FirebaseDBInstance;
 import com.mono.oregano.data.repository.baseRepository;
 import com.mono.oregano.domain.util.Result;
-    //TODO: never pass in direct objects, just pass the id or object reference to follow the Single source of truth
+
+import java.util.Date;
+
+//TODO: never pass in direct objects, just pass the id or object reference to follow the Single source of truth
 public class AuthRepository extends baseRepository {
     private static AuthRepository instance;
     private FirebaseDBInstance dataSource;
@@ -46,8 +50,11 @@ public class AuthRepository extends baseRepository {
     return result;
     }
 
-    public Result<? extends Model> registerLogin(String firstName, String midName, String lastName, String gender, String schoolNo,String email, String password){
-        Result<baseUser> regisResult =  regisInstance.register(firstName, midName, lastName, gender, schoolNo, email, password);
+    public Result<? extends Model> registerLogin(String firstName, String midName, String lastName,
+                                                 String sex, String schoolNo,String college,
+                                                 String email, String password, Date birthday){
+        Result<UserModel> regisResult =  regisInstance.register(firstName, midName, lastName,
+                sex, schoolNo,college, email, password,birthday);
 
         if (regisResult instanceof Result.Error){
             return regisResult;
