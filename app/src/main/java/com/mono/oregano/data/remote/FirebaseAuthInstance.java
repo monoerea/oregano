@@ -1,8 +1,5 @@
 package com.mono.oregano.data.remote;
 
-import static androidx.fragment.app.FragmentManager.TAG;
-
-import android.annotation.SuppressLint;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -76,14 +73,11 @@ public class FirebaseAuthInstance implements DataSources {
     }
 
     public void registerUser(String email, String password){
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener((Executor) this, new OnCompleteListener<AuthResult>() {
-            @SuppressLint("RestrictedApi")
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()){
-                    Log.d(TAG, "createUserWithEmail:success");
-                    //TODO: create a Document in Firebase FireStore that adds extra info
-                }
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener((Executor) this, task -> {
+            if (task.isSuccessful()){
+                user = mAuth.getCurrentUser();
+                //Log.i(TAG, "createUserWithEmail:success");
+                //TODO: create a Document in Firebase FireStore that adds extra info
             }
         });
 
@@ -103,19 +97,13 @@ public class FirebaseAuthInstance implements DataSources {
 
     public Result<? extends Model> register(String firstName, String midName, String lastName,
                                             String sex, String schoolNo, String college, String email,
-                                            String password, Date birthday) {
+                                            String password, String birthday) {
         try {
 
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-            registerUser(email, password);
-                }
-            });
+            new Thread(() -> registerUser(email, password));
             user = mAuth.getCurrentUser();
             if (user == null){
                 signIn(email,password);
-
             }
             String id = user.getUid();
             regisUser = new UserModel(id, firstName, midName, lastName,sex, schoolNo, college, email, password, birthday, new Date());

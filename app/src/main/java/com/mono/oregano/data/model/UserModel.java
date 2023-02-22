@@ -8,7 +8,7 @@ import java.util.Date;
 public class UserModel extends UserEntity implements Model {
     public UserModel(String id, String firstName, String midName, String lastName,
                      String sex, String schoolNo, String strCollege,
-                     String email, String password, Date dateBirthday, Date createdAt) {
+                     String email, String password, String dateBirthday, Date createdAt) {
         super(id, firstName, midName, lastName, sex, schoolNo, strCollege,
                 email, password, dateBirthday, createdAt);
     }
@@ -29,7 +29,7 @@ public class UserModel extends UserEntity implements Model {
                 snapshot.getString(getCollege()),
                 snapshot.getString(getEmail()),
                 snapshot.getString(getPassword()),
-                snapshot.getDate(getBirthday().toString()),
+                snapshot.getString(getBirthday()),
                 snapshot.getDate(getCreatedAt().toString())
                 );
     }

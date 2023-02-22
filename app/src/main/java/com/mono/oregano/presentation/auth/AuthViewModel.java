@@ -89,7 +89,7 @@ public class AuthViewModel extends ViewModel {
 
         if (!isEmailValid(email)) {
             authFormState.setValue(new AuthFormState(R.string.invalid_email, null));
-        } else if (!isPasswordValid(password)) {
+        } else if (!isPasswordValidLogin(password)) {
             authFormState.setValue(new AuthFormState(null, R.string.invalid_password));
         } else {
             authFormState.setValue(new AuthFormState(true));
@@ -154,11 +154,14 @@ public class AuthViewModel extends ViewModel {
         return !name.trim().isEmpty();
     }
 
-    // A placeholder password validation check
+    // A placeholder password validation check03/
     protected boolean isPasswordValid(String password) {
         String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–_[{}]:;',?/*~$^+=<>]).{8,20}$";
         Pattern PASSWORD = Pattern.compile(regex);
         return password != null && PASSWORD.matcher(password).matches();
+    }
+    protected boolean isPasswordValidLogin(String password){
+        return password != null && password.trim().length() > 8;
     }
 
     protected boolean isEmailValid(String email) {

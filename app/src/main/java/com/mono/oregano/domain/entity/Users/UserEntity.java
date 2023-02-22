@@ -23,7 +23,7 @@ public class UserEntity {
     private String password;
     private Date createdAt;
 
-    private Date dateBirthday;
+    private String dateBirthday;
     private String profileImg;
 
     // My Collections
@@ -42,7 +42,7 @@ public class UserEntity {
 
     public UserEntity(String id, String firstName, String midName,
                       String lastName, String sex, String schoolNo,String strCollege,
-                      String email, String password,Date dateBirthday, Date createdAt){
+                      String email, String password,String dateBirthday, Date createdAt){
         this.id = id;
         this.strFirstName = firstName;
         this.strMidName = midName;
@@ -133,11 +133,11 @@ public class UserEntity {
         this.password = password;
     }
 
-    public Date getBirthday() {
+    public String getBirthday() {
         return dateBirthday;
     }
 
-    public void setBirthday(Date birthday) {
+    public void setBirthday(String birthday) {
         this.dateBirthday = birthday;
     }
 

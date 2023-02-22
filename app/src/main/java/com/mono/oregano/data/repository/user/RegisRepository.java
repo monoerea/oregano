@@ -36,20 +36,20 @@ public class RegisRepository {
     public Result<UserModel> register(String firstName, String midName, String lastName,
                                       String sex, String schoolNo,String college,
                                       String email, String password, String birthday){
-
-        Result<UserModel> result= null;
-        try {
-            result = (Result<UserModel>) dataSource.register(firstName, midName, lastName, sex,
-                    schoolNo, college, email, password, parseDate(birthday));
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        }
+        Result<UserModel> result = (Result<UserModel>) dataSource.register(firstName, midName, lastName, sex,
+                    schoolNo, college, email, password, birthday);
         if (result instanceof Result.Success) {
             setRegisUser(((Result.Success<LoggedInUser>) result).getData());
         }
         return result;
     }
 
+    /**
+     * Parses string to Date
+     * @param date
+     * @return
+     * @throws ParseException
+     */
     private Date parseDate(String date) throws ParseException {
         DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         Date parsed = formatter.parse(date);

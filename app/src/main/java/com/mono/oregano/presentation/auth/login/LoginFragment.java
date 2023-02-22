@@ -120,7 +120,8 @@ public class LoginFragment extends BaseFragment<AuthViewModel, FragmentLoginBind
 
             @Override
             public void afterTextChanged(Editable s) {
-                loginViewModel.loginDataChanged(Objects.requireNonNull(editTextEmail.getEditText()).getText().toString(),
+                loginViewModel.loginDataChanged(Objects.requireNonNull(
+                        editTextEmail.getEditText()).getText().toString(),
                         Objects.requireNonNull(editTextPassword.getEditText()).toString());
             }
         };
