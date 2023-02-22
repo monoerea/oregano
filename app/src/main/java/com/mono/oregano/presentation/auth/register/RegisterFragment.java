@@ -67,14 +67,14 @@ public class RegisterFragment extends BaseFragment<AuthViewModel, FragmentRegist
         registerViewModel = new ViewModelProvider(this, new ViewModelFactory(AuthRepository.getInstance()))
                 .get(AuthViewModel.class);
 
-        final TextInputLayout fNameEditText = binding.firstName.getRoot();
-        final TextInputLayout mNameEditText = binding.midName.getRoot();
-        final TextInputLayout lNameEditText = binding.lastName.getRoot();
+        final TextInputLayout edtTxtFirstName = binding.firstName.getRoot();
+        final TextInputLayout edtTextMidName = binding.midName.getRoot();
+        final TextInputLayout edtTxtLastName = binding.lastName.getRoot();
         final DropDownEditTextBinding dropSex = binding.sex;
         final DropDownEditTextBinding dropCollege = binding.college;
-        final TextInputLayout schoolNumEditText = binding.schoolNum.getRoot();
-        final TextInputLayout emailEditText = binding.email.getRoot();
-        final TextInputLayout passwordEditText = binding.password.getRoot();
+        final TextInputLayout edtTxtSchoolNum = binding.schoolNum.getRoot();
+        final TextInputLayout edtTxtEmail = binding.email.getRoot();
+        final TextInputLayout edtTxtPassword = binding.password.getRoot();
         final TextInputLayout pkrBirthday = binding.date.getRoot();
         final Button btnRegister = binding.register.getRoot();
         final ProgressBar loadingProgressBar = binding.progressBar.getRoot();
@@ -89,35 +89,35 @@ public class RegisterFragment extends BaseFragment<AuthViewModel, FragmentRegist
             btnRegister.setEnabled(regisFormState.isDataValid());
 
             if (regisFormState.getFirstNameError()!= null){
-                fNameEditText.setError(getString(regisFormState.getFirstNameError()));
+                edtTxtFirstName.setError(getString(regisFormState.getFirstNameError()));
             }else {
-                fNameEditText.setError(null);
+                edtTxtFirstName.setError(null);
             }
             if (regisFormState.getMidNameError()!= null){
-                mNameEditText.setError(getString(regisFormState.getMidNameError()));
+                edtTextMidName.setError(getString(regisFormState.getMidNameError()));
             }else {
-                mNameEditText.setError(null);
+                edtTextMidName.setError(null);
             }
             if (regisFormState.getLastNameError()!= null){
-                lNameEditText.setError(getString(regisFormState.getLastNameError()));
+                edtTxtLastName.setError(getString(regisFormState.getLastNameError()));
             }else {
-                lNameEditText.setError(null);
+                edtTxtLastName.setError(null);
             }
             if (regisFormState.getSchoolNumError()!= null){
-                schoolNumEditText.setError(getString(regisFormState.getSchoolNumError()));
+                edtTxtSchoolNum.setError(getString(regisFormState.getSchoolNumError()));
             }else{
-                schoolNumEditText.setError(null);
+                edtTxtSchoolNum.setError(null);
             }
 
             if (regisFormState.getEmailError() != null) {
-                emailEditText.setError(getString(regisFormState.getEmailError()));
+                edtTxtEmail.setError(getString(regisFormState.getEmailError()));
             }else {
-                emailEditText.setError(null);
+                edtTxtEmail.setError(null);
             }
             if (regisFormState.getPasswordError() != null) {
-                passwordEditText.setError(getString(regisFormState.getPasswordError()));
+                edtTxtPassword.setError(getString(regisFormState.getPasswordError()));
             }else{
-                passwordEditText.setError(null);
+                edtTxtPassword.setError(null);
             }
         });
 
@@ -151,30 +151,30 @@ public class RegisterFragment extends BaseFragment<AuthViewModel, FragmentRegist
             @Override
             public void afterTextChanged(Editable s) {
                 //TODO: create the regis fragment to support the other shit
-                registerViewModel.regisDataChanged(Objects.requireNonNull(fNameEditText.getEditText()).getText().toString(),
-                        Objects.requireNonNull(mNameEditText.getEditText()).getText().toString(),
-                        Objects.requireNonNull(lNameEditText.getEditText()).getText().toString(),
+                registerViewModel.regisDataChanged(Objects.requireNonNull(edtTxtFirstName.getEditText()).getText().toString(),
+                        Objects.requireNonNull(edtTextMidName.getEditText()).getText().toString(),
+                        Objects.requireNonNull(edtTxtLastName.getEditText()).getText().toString(),
                         Objects.requireNonNull(dropSex.getRoot().getEditText()).getText().toString(),
-                        Objects.requireNonNull(schoolNumEditText.getEditText()).getText().toString(),
+                        Objects.requireNonNull(edtTxtSchoolNum.getEditText()).getText().toString(),
                         Objects.requireNonNull(dropCollege.getRoot().getEditText()).getText().toString(),
-                        Objects.requireNonNull(emailEditText.getEditText()).getText().toString(),
-                        Objects.requireNonNull(passwordEditText.getEditText()).getText().toString()
+                        Objects.requireNonNull(edtTxtEmail.getEditText()).getText().toString(),
+                        Objects.requireNonNull(edtTxtPassword.getEditText()).getText().toString()
                         //Date.valueOf(Objects.requireNonNull(pkrBirthday.getEditText()).toString())
                 );
             }
         };
-        Objects.requireNonNull(emailEditText.getEditText()).addTextChangedListener(afterTextChangedListener);
-        Objects.requireNonNull(passwordEditText.getEditText()).addTextChangedListener(afterTextChangedListener);
-        passwordEditText.getEditText().setOnEditorActionListener((v, actionId, event) -> {
+        Objects.requireNonNull(edtTxtEmail.getEditText()).addTextChangedListener(afterTextChangedListener);
+        Objects.requireNonNull(edtTxtPassword.getEditText()).addTextChangedListener(afterTextChangedListener);
+        edtTxtPassword.getEditText().setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                registerViewModel.register(Objects.requireNonNull(fNameEditText.getEditText()).getText().toString(),
-                        Objects.requireNonNull(mNameEditText.getEditText()).getText().toString(),
-                        Objects.requireNonNull(lNameEditText.getEditText()).getText().toString(),
+                registerViewModel.register(Objects.requireNonNull(edtTxtFirstName.getEditText()).getText().toString(),
+                        Objects.requireNonNull(edtTextMidName.getEditText()).getText().toString(),
+                        Objects.requireNonNull(edtTxtLastName.getEditText()).getText().toString(),
                         Objects.requireNonNull(dropSex.getRoot().getEditText()).getText().toString(),
                         Objects.requireNonNull(dropCollege.getRoot().getEditText()).getText().toString(),
-                        Objects.requireNonNull(schoolNumEditText.getEditText()).getText().toString(),
-                        emailEditText.getEditText().getText().toString(),
-                        passwordEditText.getEditText().toString(),
+                        Objects.requireNonNull(edtTxtSchoolNum.getEditText()).getText().toString(),
+                        edtTxtEmail.getEditText().getText().toString(),
+                        edtTxtPassword.getEditText().toString(),
                         Objects.requireNonNull(pkrBirthday.getEditText()).toString()
                         );
             }
@@ -183,14 +183,14 @@ public class RegisterFragment extends BaseFragment<AuthViewModel, FragmentRegist
 
         btnRegister.setOnClickListener(v -> {
             loadingProgressBar.setVisibility(View.VISIBLE);
-            registerViewModel.register(Objects.requireNonNull(fNameEditText.getEditText()).getText().toString(),
-                    Objects.requireNonNull(mNameEditText.getEditText()).getText().toString(),
-                    Objects.requireNonNull(lNameEditText.getEditText()).getText().toString(),
+            registerViewModel.register(Objects.requireNonNull(edtTxtFirstName.getEditText()).getText().toString(),
+                    Objects.requireNonNull(edtTextMidName.getEditText()).getText().toString(),
+                    Objects.requireNonNull(edtTxtLastName.getEditText()).getText().toString(),
                     Objects.requireNonNull(dropSex.getRoot().getEditText()).getText().toString(),
-                    Objects.requireNonNull(schoolNumEditText.getEditText()).getText().toString(),
+                    Objects.requireNonNull(edtTxtSchoolNum.getEditText()).getText().toString(),
                     Objects.requireNonNull(dropCollege.getRoot().getEditText()).getText().toString(),
-                    emailEditText.getEditText().getText().toString(),
-                    passwordEditText.getEditText().toString(),
+                    edtTxtEmail.getEditText().getText().toString(),
+                    edtTxtPassword.getEditText().toString(),
                     Objects.requireNonNull(pkrBirthday.getEditText()).toString());
 
         });

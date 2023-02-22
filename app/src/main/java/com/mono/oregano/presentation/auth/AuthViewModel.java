@@ -62,7 +62,9 @@ public class AuthViewModel extends ViewModel {
         user = null;
         authRepository.signOut();
     }
-
+    //calls the authRepository login function and result a result
+    //with a class that inherits from Model
+    //the Results are typed with Error or Success and handles the outcome of the result
     public void register(String firstName, String midName, String lastName,
                          String sex, String schoolNo, String college, String email,
                          String password, String birthdate) {
@@ -132,8 +134,8 @@ public class AuthViewModel extends ViewModel {
         if (isDateValid(birthdate)) {
             authFormState.setValue(new AuthFormState(null, null,
                     null, null, R.string.invalid_password, null));
-
-        }*/ else {
+        }*/
+        else {
             authFormState.setValue(new AuthFormState(true));
         }
     }
