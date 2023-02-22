@@ -32,7 +32,7 @@
             layout="@layout/edit_text_design"
             />
         <include
-            android:id="@+id/gender"
+            android:id="@+id/sex"
             layout="@layout/drop_down_edit_text"
             />
         <include

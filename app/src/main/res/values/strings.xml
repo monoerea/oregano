@@ -45,6 +45,10 @@
     <string name="first_name">First Name</string>
     <string name="mid_name">Middle Name</string>
     <string name="last_name">Last Name</string>
-    <string name="gender">Gender</string>
+    <string name="sex">Sex</string>
     <string name="school_num">School Number</string>
+    <string name="college">College</string>
+    <string name="birthdate">Birthdate</string>
+
+    <string name="already_have_an_acc">Already have an account? Login now!</string>
 </resources>
