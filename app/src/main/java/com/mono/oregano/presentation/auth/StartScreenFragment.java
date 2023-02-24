@@ -55,7 +55,4 @@ public class StartScreenFragment extends BaseFragment<AuthViewModel, FragmentSta
         uiUtil.navigate(binding.getRoot(),registerBtn, R.id.action_startFragment_to_registerFragment);
         uiUtil.navigate(binding.getRoot(),signInBtn, R.id.action_startFragment_to_loginFragment);
     }
-
-
-
 }

@@ -60,13 +60,13 @@ public class AuthRepository extends baseRepository {
             // via segmenting for each business object or pass a general model like rn
             //NEED TO TEST ASAP
         UserModel user = ((Result.Success<UserModel>) regisResult).getData();
-        UserModel model = new UserModel(user.getId(),user.getFirstName(),user.getMidName(),user.getLastName(),user.getSex(),user.getSchoolNo(),user.getCollege(),user.getEmail(),user.getPassword(), user.getBirthday(), user.getCreatedAt());
-        Result<Model> result = dataSource.insert(null, model);
-        if (result instanceof Result.Error){
-            return result;
-        }
+        Result<Model> result = dataSource.insert(null, user);
+        return result;
+        //if (result instanceof Result.Error){
+        //    return result;
+        //}
 
-        Result<Model> clients = dataSource.insert("Clients",model);
-        return clients;
+        //Result<Model> clients = dataSource.insert("Clients",model);
+        //return clients;
     }
 }

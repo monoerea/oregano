@@ -2,9 +2,6 @@ package com.mono.oregano.data.remote;
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -17,9 +14,12 @@ import com.mono.oregano.domain.util.Result;
 import java.io.IOException;
 import java.util.Date;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class FirebaseAuthInstance implements DataSources {
-
+    private ExecutorService executor = Executors.newSingleThreadExecutor();
     private FirebaseAuthInstance instance;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseUser user;
@@ -53,36 +53,15 @@ public class FirebaseAuthInstance implements DataSources {
         }
     }
     public void signIn(String email,String password){
-        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener((Executor) this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    // Sign in success, update UI with the signed-in user's information
-                    FirebaseUser user = mAuth.getCurrentUser();
-                    if (user!= null){
-                        String uid = user.getUid();
-                        String email = user.getEmail();
-                        loggedUser = new LoggedInUser(uid, email);
-                    }
-                }
-                else {
-                    Log.e("error", task.getException().getMessage());
-                }
-            }
-        });
-    }
-
-    public void registerUser(String email, String password){
-        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener((Executor) this, task -> {
-            if (task.isSuccessful()){
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener((Executor) this, task -> {
+            if (task.isSuccessful()) {
+                // Sign in success, update UI with the signed-in user's information
                 user = mAuth.getCurrentUser();
-                loggedUser = new LoggedInUser(user.getUid(), user.getEmail());
-                //Log.i(TAG, "createUserWithEmail:success");
-                //TODO: create a Document in Firebase FireStore that adds extra info
             }
-
+            else {
+                Log.e("error", task.getException().getMessage());
+            }
         });
-
     }
 
     public Result<LoggedInUser> getLoggedUser(){
@@ -96,19 +75,29 @@ public class FirebaseAuthInstance implements DataSources {
         mAuth.signOut();
         return "Logout Success";
     }
-
+    public Future<Task<AuthResult>> registerUser(String email, String password){
+        return executor.submit(() ->
+                mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(executor, task -> {
+                    if (task.isSuccessful()){
+                        user = task.getResult().getUser();
+                    }
+                }));
+    }
+    public void regisUser(String strEmail,String srPassword){
+        mAuth.createUserWithEmailAndPassword(strEmail, srPassword).addOnCompleteListener(task -> {
+            if (task.isSuccessful()){
+                 user = mAuth.getCurrentUser();
+            }
+        });
+    }
     public Result<? extends Model> register(String firstName, String midName, String lastName,
                                             String sex, String schoolNo, String college, String email,
                                             String password, String birthday) {
         try {
-
-            new Thread(() -> registerUser(email, password));
+            regisUser(email, password);
             user = mAuth.getCurrentUser();
-            if (user == null){
-                signIn(email,password);
-            }
-            String id = user.getUid();
-            regisUser = new UserModel(id, firstName, midName, lastName,sex, schoolNo, college, email, password, birthday, new Date());
+            regisUser = new UserModel(user.getUid(), firstName, midName, lastName,sex, schoolNo, college,
+                    user.getEmail(), password, birthday, new Date());
             return new Result.Success<>(regisUser);
         }
         catch (Exception e){
