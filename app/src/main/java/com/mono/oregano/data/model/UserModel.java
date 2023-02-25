@@ -37,7 +37,7 @@ public class UserModel extends UserEntity implements Model {
 
     @Override
     public String getModelName() {
-        return "Users";
+        return "User";
     }
     @Override
     public String getObjectName() {

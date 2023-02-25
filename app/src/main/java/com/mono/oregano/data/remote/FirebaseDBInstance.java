@@ -9,7 +9,6 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.SetOptions;
 import com.mono.oregano.data.model.Model;
 import com.mono.oregano.domain.util.Result;
 
@@ -62,18 +61,19 @@ public class FirebaseDBInstance implements DataSources {
 
 
     public CollectionReference createCollection(String colName) {
-        return db.collection(colName).getParent().collection(colName);
+        return db.collection(colName);
     }
 
     private void add(@Nullable String colRef, Model model) {
+        //TODO:Might remove colRef if users work
         CollectionReference reference = null;
-        if (colRef == null){
-            reference = db.collection(model.getModelName());
+        if (colRef != null){
+            reference = db.collection(colRef);
         }
         if (reference == null) {
-            reference = createCollection(model.getModelName());
+            //reference = createCollection(model.getModelName());
         }
-        reference.document(model.getObjectID()).set(model.toDocument(), SetOptions.merge()).addOnCompleteListener(task -> {
+        db.collection(model.getModelName()).document(model.getObjectID()).set(model.toDocument()).addOnCompleteListener(task -> {
             if (task.isSuccessful()){
                 Log.d("Success","Insert success");
             }else{
