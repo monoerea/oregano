@@ -2,6 +2,9 @@ package com.mono.oregano.data.remote;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -75,7 +78,7 @@ public class FirebaseAuthInstance implements DataSources {
         mAuth.signOut();
         return "Logout Success";
     }
-    public Future<Task<AuthResult>> registerUser(String email, String password){
+    public Future<Task<AuthResult>> registUser(String email, String password){
         return executor.submit(() ->
                 mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(executor, task -> {
                     if (task.isSuccessful()){
@@ -83,11 +86,16 @@ public class FirebaseAuthInstance implements DataSources {
                     }
                 }));
     }
-    public void regisUser(String strEmail,String srPassword){
-        mAuth.createUserWithEmailAndPassword(strEmail, srPassword).addOnCompleteListener(task -> {
-            if (task.isSuccessful()){
-                 FirebaseUser newUser = mAuth.getCurrentUser();
-                 user = newUser;
+    public void registerUser(String strEmail, String strPassword){
+        mAuth.createUserWithEmailAndPassword(strEmail, strPassword).addOnCompleteListener((Executor) this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()) {
+                    Log.d( "Success", "createUserWithEmail:success" );
+                    FirebaseUser user = mAuth.getCurrentUser();
+                } else {
+                    Log.w("Failed", "createUserWithEmail:failed");
+                }
             }
         });
     }
@@ -95,7 +103,8 @@ public class FirebaseAuthInstance implements DataSources {
                                             String sex, String schoolNo, String college, String email,
                                             String password, String birthday) {
         try {
-            regisUser(email, password);
+            //regisUser(email, password);
+            registerUser(email, password);
             user = mAuth.getCurrentUser();
             regisUser = new UserModel(user.getUid(), firstName, midName, lastName,sex, schoolNo, college,
                     user.getEmail(), password, birthday, new Date());
