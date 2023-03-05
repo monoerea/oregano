@@ -2,8 +2,11 @@ package com.mono.oregano.data.remote;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -22,6 +25,9 @@ public class FirebaseDBInstance implements DataSources {
     private static FirebaseDBInstance instance;
     private final FirebaseFirestore db = FirebaseFirestore.getInstance();
 
+    /*
+    This is for Discover Activity - Search User
+     */
     public Result<? extends Model> searchByID(Model model, String id) {
         try {
             // Attempts signing using the given
@@ -73,16 +79,22 @@ public class FirebaseDBInstance implements DataSources {
         if (reference == null) {
             //reference = createCollection(model.getModelName());
         }
-        db.collection(model.getModelName()).document(model.getObjectID()).set(model.toDocument()).addOnCompleteListener(task -> {
-            if (task.isSuccessful()){
-                Log.d("Success","Insert success");
-            }else{
-                Log.w("Error", "Error writing document");
+        /*
+        Function is to insert a sample row to a sample table
+        database.table("user").document(primary key).set("data")
+        database.table().document().insert()
+         */
+        db.collection(model.getModelName()).document(model.getObjectID()).set(model.toDocument()).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    Log.d("Success","Insert success");
+                }else{
+                    Log.w("Error", "Error writing document");
+                }
             }
         });
     }
-
-
     private Result<Model> getByID(Model model, String id) {
         //Returns one queried data
         CollectionReference reference = db.collection(model.getModelName());

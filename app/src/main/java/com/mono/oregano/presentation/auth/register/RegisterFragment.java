@@ -11,6 +11,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -292,6 +293,8 @@ public class RegisterFragment extends BaseFragment<AuthViewModel, FragmentRegist
 
     @Override
     public void onDestroyView() {
+        final CheckBox checkBox = binding.checkbox.getRoot();
+        viewModelRegister.signOut(checkBox.isChecked());
         super.onDestroyView();
         binding = null;
     }
